@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Illuminate\Mail\Transport\ArrayTransport;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class FormInput extends Component
@@ -26,6 +27,12 @@ class FormInput extends Component
     public function createProduct(): void
     {
 
+    }
+
+    #[On('send-category')]
+    public function setCategory($category): void
+    {
+        $this->input['search'] = $category;
     }
 
     public function render()

@@ -11,8 +11,21 @@ class SearchOption extends Component
 {
     public string $search;
     public ?array $result = null;
+    public array $myAttribute;
+    public string $key = '';
 
-    public function updatedSearch($value)
+
+    public function mount(
+        array $myAttribute = [
+            'placeholder' => 'masukkan category',
+        ],
+    ): void
+    {
+        $this->myAttribute = $myAttribute;
+        $myAttribute['default'] ? $this->search = $myAttribute['default'] : '';
+    }
+
+    public function updatedSearch($value): void
     {
         if (!empty(trim($value))) {
             $result =  Category::select('name')
@@ -21,12 +34,15 @@ class SearchOption extends Component
                                         ->toArray();
         }
         $this->result = $result ?? [];
+        $this->dispatch('send-category', category: $value);
     }
 
     public function sendValue(string $name): void
     {
         $this->search = $name;
+        $this->key = $name;
         $this->result = [];
+        $this->dispatch('send-category', category: $name);
     }
 
     public function render()

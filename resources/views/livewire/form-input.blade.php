@@ -1,10 +1,14 @@
-<div>
-    {{-- <h1>{{ $input['name'] }}</h1> --}}
+<div class="p-6 rounded-lg shadow-lg w-full max-w-md">
     <form wire:submit.prevent='{{ $method }}'>
         @foreach ($fields as $key => $value)
         <div class="mb-4">
             @if ($key == 'search')
-                <livewire:search-option/>
+                <livewire:search-option
+                    :myAttribute="[
+                        'placeholder' => $value['placeholder'],
+                        'default' => $value['default'] ?? '',
+                    ]"
+                />
             @else
                 <label for="{{ $key }}" class="block font-medium">{{ Str::ucfirst($key) }}</label>
                 <input
@@ -18,5 +22,6 @@
             @endif
         </div>
         @endforeach
+        <button type="submit" class="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition">Submit</button>
     </form>
 </div>
