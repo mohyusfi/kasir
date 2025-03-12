@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\OnlyAdminMiddleware;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -14,7 +15,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/products', function () {
     return view('product');
-})->middleware('auth')->name('products');
+})->middleware(['auth', OnlyAdminMiddleware::class])->name('products');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
