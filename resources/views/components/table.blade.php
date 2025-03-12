@@ -6,7 +6,7 @@
         <thead>
             <tr>
                 @foreach ($thead as $item)
-                    <th>{{ $item }}</th>
+                    <th class="font-semibold text-gray-900">{{ $item }}</th>
                 @endforeach
             </tr>
         </thead>
