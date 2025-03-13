@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Services\ProductService;
 use Illuminate\Mail\Transport\ArrayTransport;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -24,9 +25,16 @@ class FormInput extends Component
         }
     }
 
-    public function createProduct(): void
+    public function createProduct(ProductService $productService): void
     {
+        $result = $this->validate([
+            'input.name' => ['required', 'string', 'min:3', 'max:100'],
+            'input.description' => ['nullable', 'string'],
+            'input.quantity' => ['required', 'integer'],
+            'input.price' => ['required', 'integer'],
+        ]);
 
+        dd($result);
     }
 
     #[On('send-category')]

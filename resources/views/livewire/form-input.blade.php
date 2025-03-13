@@ -12,9 +12,10 @@
             @else
                 <label for="{{ $key }}" class="block font-medium">{{ Str::ucfirst($key) }}</label>
                 <input
-                    type="text"
+                    type="{{ $value['type'] }}"
                     id="{{ $key }}"
                     name="{{ $key }}"
+                    autocomplete="off"
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="{{ $value['placeholder'] }}"
                     required
                     {{ $value['directive'] }} />
