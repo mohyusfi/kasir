@@ -1,4 +1,18 @@
 <div class="p-6 rounded-lg shadow-lg w-full max-w-md">
+    @if (session()->has('message'))
+        <x-alert
+            :message="session('message')"
+            type="alert-success" />
+    @endif
+    @if ($errors->any())
+        @foreach ($errors->all() as $index => $message)
+            @if ($index === 0)
+            <x-alert
+                :message="$message"
+                type="alert-error" />
+            @endif
+        @endforeach
+    @endif
     <form wire:submit.prevent='{{ $method }}'>
         @foreach ($fields as $key => $value)
         <div class="mb-4">
@@ -17,7 +31,6 @@
                     name="{{ $key }}"
                     autocomplete="off"
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="{{ $value['placeholder'] }}"
-                    required
                     {{ $value['directive'] }} />
 
             @endif

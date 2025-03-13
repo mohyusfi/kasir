@@ -25,22 +25,28 @@ class FormInput extends Component
         }
     }
 
-    public function createProduct(ProductService $productService): void
+    public function createProduct(ProductService $productService)
     {
-        $result = $this->validate([
+        $product = $this->validate([
             'input.name' => ['required', 'string', 'min:3', 'max:100'],
             'input.description' => ['nullable', 'string'],
             'input.quantity' => ['required', 'integer'],
             'input.price' => ['required', 'integer'],
+            'input.category' => ['required', 'string'],
         ]);
 
-        dd($result);
+        $category = $product['input']['category'];
+        unset($product['input']['category']);
+
+        $productService->create($product['input']);
+
+        session()->flash('message', 'success create data');
     }
 
     #[On('send-category')]
     public function setCategory($category): void
     {
-        $this->input['search'] = $category;
+        $this->input['category'] = $category;
     }
 
     public function render()
