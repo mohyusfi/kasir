@@ -13,4 +13,11 @@ class Product extends Model
         'quantity',
         'price',
     ];
+
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'created_at' => 'datetime',
+    //     ];
+    // }
 }

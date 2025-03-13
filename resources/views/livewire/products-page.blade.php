@@ -1,15 +1,19 @@
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-    <x-table :thead="['id', 'name', 'description', 'quantity', 'added at', 'action']">
-        <tr>
-            <td>1</td>
-            <td>Sabun Lux</td>
-            <td>Sabun cuci badan</td>
-            <td>12</td>
-            <td>2 hours ago</td>
-            <td>
-                <button type="button" class="btn">delete</button>
-            </td>
-        </tr>
+    <x-table :thead="['id', 'name', 'description', 'quantity', 'price', 'added at', 'action']">
+        {{-- @dd($products->all()) --}}
+        @foreach ($products->all() ?? [] as $product)
+            <tr>
+                <td>{{ $product->id }}</td>
+                <td>{{ $product->name }}</td>
+                <td>{{ $product->description }}</td>
+                <td>{{ $product->quantity }}</td>
+                <td>Rp. {{ number_format($product->price) }}</td>
+                <td>{{ $product->created_at?->diffForHumans() }}</td>
+                <td>
+                    <button type="button" class="btn">delete</button>
+                </td>
+            </tr>
+        @endforeach
     </x-table>
 
     <x-daisy-modal>
