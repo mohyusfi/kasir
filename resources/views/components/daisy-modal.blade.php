@@ -1,7 +1,7 @@
 <!-- Open the modal using ID.showModal() method -->
-@props(['title', 'btnName'])
+@props(['title', 'btnName', 'btnType'])
 
-<button class="btn mt-2" onclick="my_modal_5.showModal()">{{ $btnName ?? 'create' }}</button>
+<button class="btn m-2 {{ $btnType }}" onclick="my_modal_5.showModal()">{{ $btnName ?? 'create' }}</button>
 <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
   <div class="modal-box">
     <h3 class="text-lg font-bold">{{ $title ?? 'Daisy Modal' }}</h3>

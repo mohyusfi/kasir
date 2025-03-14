@@ -10,13 +10,26 @@
                 <td>Rp. {{ number_format($product->price) }}</td>
                 <td>{{ $product->created_at?->diffForHumans() }}</td>
                 <td>
-                    <button type="button" class="btn">delete</button>
+                    <div class="flex gap-2">
+                        <x-action-button
+                            content="edit"
+                            btnType="btn btn-warning btn-xs"
+                            wire:click='editProduct({{ $product->id }})'/>
+
+                        <x-action-button
+                            content="delete"
+                            btnType="btn btn-error btn-xs"
+                            wire:click='deleteProduct({{ $product->id }})'
+                            wire:confirm='ARE YOU SURE TO DELETE {{ $product->name }} ?'/>
+                    </div>
                 </td>
             </tr>
         @endforeach
     </x-table>
 
-    <x-daisy-modal>
+    <x-daisy-modal
+        btnType="btn-sm"
+    >
         <livewire:form-input
             :fields="[
                 'name' => [
