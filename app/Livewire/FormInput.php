@@ -12,14 +12,17 @@ class FormInput extends Component
     public array $input = [];
     public array $fields;
     public string $method;
+    public string $btnName;
 
     public function mount(
         array $fields,
         string $method,
+        string $btnName = 'create',
     ): void
     {
         $this->fields = $fields;
         $this->method = $method;
+        $this->btnName = $btnName;
         foreach ($fields as $key => $value) {
             $this->input[$key] = $value['default'] ?? '';
         }

@@ -36,6 +36,9 @@
             @endif
         </div>
         @endforeach
-        <button type="submit" class="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition">Submit</button>
+        <button
+            type="submit"
+            class="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition"
+            >{{ $btnName }}</button>
     </form>
 </div>

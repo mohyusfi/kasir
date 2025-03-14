@@ -58,6 +58,7 @@
                 ]
             ]"
             method="createProduct"
+            btnName="create"
         />
     </x-daisy-modal>
 </div>
