@@ -1,6 +1,6 @@
 @props(['fields', 'btnName', 'method'])
 
-<div class="p-6 rounded-lg shadow-lg w-full max-w-md" >
+<div class="p-6 rounded-lg w-full max-w-md" x-data="{ loading: false }">
     @if (session()->has('message'))
         <x-alert
             :message="session('message')"
@@ -16,7 +16,15 @@
         @endforeach
     @endif
 
-    <form wire:submit.prevent='{{ $method }}' {{ $attributes->merge() }} >
+    <div x-show="loading"
+        class="none absolute bg-gray-100 bg-opacity-50 inset-0 flex justify-center items-center">
+        <span class="loading loading-spinner text-primary block w-[5em]"></span>
+    </div>
+
+    <form wire:submit.prevent='{{ $method }}'
+        @submit="loading = true"
+        x-init="$watch('loading', value => { if (value) setTimeout(() => loading = false, 1000) })"
+        {{ $attributes->merge() }} >
         @foreach ($fields as $key => $value)
             <div class="mb-4" wire:key='{{ $key }}'>
                 @if ($key == 'search')
@@ -30,7 +38,6 @@
                         name="{{ $key }}"
                         id="{{ $key }}" rows="3"
                         wire:model="{{ $value['directive'] }}"
-                        {{-- wire:key="{{ $key }}" --}}
                         placeholder="{{ $value['placeholder'] ?? '' }}"
                         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 @else
@@ -45,6 +52,7 @@
         @endforeach
         <button
             type="submit"
+            x-bind:disabled="loading"
             class="w-full bg-gray-600 text-white py-2 rounded-lg hover:bg-gray-700 transition"
             >{{ $btnName }}</button>
     </form>

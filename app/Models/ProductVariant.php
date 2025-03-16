@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductVariant extends Model
 {
-    protected string $table = 'product_variants';
+    protected $table = 'product_variants';
 
-    public array $fillable = [
+    public $fillable = [
         'product_id',
         'color',
         'size',

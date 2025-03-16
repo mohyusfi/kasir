@@ -14,17 +14,19 @@ class ProductsPage extends Component
 {
     use TraitSearch;
     public ProductRequest $productRequest;
-    public ?Collection $products = null;
+    public Collection|string|null $products = null;
     public ?int $showEdit = null;
 
     public function mount()
     {
-        $this->products = Product::all();
+        $this->products = Product::select(['id', 'name', 'description', 'category_id'])
+                                ->with(['category', 'variants'])
+                                ->get();
     }
 
     public function createProduct(ProductService $productService)
     {
-        $product = $this->validate([
+        $this->validate([
             'productRequest.name' => ['required', 'string', 'min:3', 'max:100'],
             'productRequest.description' => ['nullable', 'string'],
             'productRequest.stock' => ['required', 'integer'],
@@ -34,7 +36,9 @@ class ProductsPage extends Component
             'productRequest.size' => ['nullable', 'string'],
         ]);
 
-        dd($product);
+        $result = $productService->create($this->productRequest);
+
+        session()->flash("message", "success create " . $result->name);
     }
 
 

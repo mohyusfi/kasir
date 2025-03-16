@@ -1,7 +1,7 @@
-@props(['placeholder' => 'Enter New Category', 'type', 'result' => null])
+@props(['placeholder' => 'Enter New Category', 'type', 'result' => null, 'label' => 'category'])
 
 <div>
-    <label for="category" class="block">Category</label>
+    <label for="category" class="block">{{ ucfirst($label) }}</label>
     <input
         id="category"
         type="text"

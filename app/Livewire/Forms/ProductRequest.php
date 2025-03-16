@@ -7,8 +7,6 @@ use Livewire\Form;
 
 class ProductRequest extends Form
 {
-    public string $username;
-    public string $password;
     public string $name;
     public string $description;
     public string $category;

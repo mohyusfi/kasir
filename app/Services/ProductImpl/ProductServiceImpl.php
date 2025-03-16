@@ -2,13 +2,43 @@
 
 namespace App\Services\ProductImpl;
 
+use App\Livewire\Forms\ProductRequest;
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Services\ProductService;
 
 class ProductServiceImpl implements ProductService {
-    public function create(array $data): Product
+    public function create(ProductRequest $product): Product
     {
-        return Product::create($data);
+        $categoryId = Category::select("id")
+                ->where("name", strtolower(trim($product->category)))
+                ->first()->id;
+
+        // dd($categoryId->id);
+
+        if ($categoryId == null) {
+            $category = Category::create(['name' => strtolower($product->category)]);
+            $categoryId = $category->id;
+        }
+
+        $result = Product::create([
+            'name' => $product->name,
+            'description' => $product->description,
+            'category_id' => $categoryId,
+        ]);
+
+        $productId = $result->id;
+
+        ProductVariant::create([
+            'product_id' => $productId,
+            'color' => $product->color,
+            'size' => $product->size,
+            'price' => $product->price,
+            'stock' => $product->stock,
+        ]);
+
+        return $result;
     }
 
     public function update(array $data, int $id): bool

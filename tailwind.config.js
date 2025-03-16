@@ -26,6 +26,10 @@ export default {
         },
     },
 
+    daysyui: {
+        themes: ['light', 'dark'],
+    },
+
     plugins: [
         forms,
         require('daisyui')

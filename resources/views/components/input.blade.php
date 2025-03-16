@@ -1,7 +1,7 @@
 @props(['type' => 'text', 'name', 'label', 'placeholder' => ''])
 
 <div>
-    <label for="{{ $name }}" class="block font-medium text-sm text-gray-700">{{ $label }}</label>
+    <label for="{{ $name }}" class="block font-medium text-sm">{{ ucfirst($label) }}</label>
     <input
         type="{{ $type }}"
         name="{{ $name }}"
