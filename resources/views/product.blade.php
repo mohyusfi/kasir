@@ -6,6 +6,6 @@
     </x-slot>
 
     <div class="py-10">
-        <livewire:products-page/>
+        <livewire:products-page />
     </div>
 </x-app-layout>

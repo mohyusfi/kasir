@@ -1,12 +1,12 @@
+@props(['placeholder' => 'Enter New Category', 'type', 'result' => null])
+
 <div>
-    <label for="category">Category</label>
-    <br>
+    <label for="category" class="block">Category</label>
     <input
         id="category"
         type="text"
-        wire:key='{{ $key }}'
-        placeholder="{{ $myAttribute['placeholder'] }}"
-        wire:model.live.debounce.150ms="search"
+        placeholder="{{ $placeholder }}"
+        wire:model.live.debounce.500ms="search"
         wire:ignore
         autocomplete="off"
         class="w-[15em] mt-1 py-2 px-8 text-gray-700 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-[1px]" />

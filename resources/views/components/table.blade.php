@@ -6,7 +6,7 @@
         <thead>
             <tr>
                 @foreach ($thead as $item)
-                    <th class="font-semibold text-gray-900">{{ $item }}</th>
+                    <th class="font-semibold text-gray-900" wire:key="{{ $item }}">{{ $item }}</th>
                 @endforeach
             </tr>
         </thead>

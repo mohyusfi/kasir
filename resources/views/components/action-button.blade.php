@@ -1,10 +1,10 @@
-@props(['content', 'btnType'])
+@props(['content', 'btnType' => 'btn btn-error btn-xs'])
 
 
 <div>
     <button
         type="button"
         class="{{ $btnType }}"
-        {{ $attributes->whereStartsWith('wire') }}
+        {{ $attributes }}
         >{{ $content }}</button>
 </div>

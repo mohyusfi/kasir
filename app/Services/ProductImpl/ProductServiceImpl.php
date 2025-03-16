@@ -11,13 +11,20 @@ class ProductServiceImpl implements ProductService {
         return Product::create($data);
     }
 
-    public function update(): bool
+    public function update(array $data, int $id): bool
     {
         return true;
     }
 
-    public function delete(): bool
+    public function delete(int $id): bool
     {
-        return true;
+        $product = Product::find($id);
+
+        if (!is_null($product)) {
+            $product->delete();
+            return true;
+        }
+
+        return false;
     }
 }
