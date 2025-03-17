@@ -1,39 +1,48 @@
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
     {{-- @dd($products) --}}
-    @foreach ($products as $item)
-        <div class="my-2">
-            <p>{{ $item->name }}</p>
-            <p>{{ $item->category }}</p>
-            <p>{{ $item->variants->toJson(JSON_PRETTY_PRINT) }}</p>
-        </div>
-    @endforeach
-    {{-- <x-table :thead="['id', 'name', 'description', 'stock', 'price', 'added at', 'action']">
-        @foreach ($products ?? [] as $product)
-            <tr wire:key='product-{{ $product->id }}' class="">
-                <td>{{ $product->id }}</td>
-                <td>{{ $product->name }}</td>
-                <td>{{ $product->description }}</td>
-                <td>{{ $product->quantity }}</td>
-                <td>Rp. {{ number_format($product->price) }}</td>
-                <td>{{ $product->created_at?->diffForHumans() }}</td>
-                <td>
-                    <div class="flex gap-2">
-                        <x-action-button content="edit"
-                            btnType="btn {{ ($showEdit == $product->id) ? 'bg-gray-700 text-white hover:bg-gray-800' : 'btn-warning' }} btn-xs"
-                            wire:click='setProduct({{ $product->id }})' wire:key='{{ uniqid() }}' />
-                        <x-action-button content="delete" btnType="btn btn-error btn-xs"
-                            wire:click='deleteProduct({{ $product->id }})'
-                            wire:confirm='ARE YOU SURE TO DELETE {{ $product->name }} ?' />
-                    </div>
-                </td>
-            </tr>
+    <x-table :thead="['#', 'name', 'description', 'category', 'stock', 'size', 'color', 'price', 'added_at', 'action']">
+        @php
+            $row = 1;
+        @endphp
+        @foreach ($products as $index => $product)
+            @foreach ($product->variants as $variant)
+                <tr wire:key="{{ $product->id }}">
+                    <td>{{ $row++ }}</td>
+                    <td>{{ $product->name }}</td>
+                    <td class="text-justify">{{ $product->description }}</td>
+                    <td>{{ $product->category->name }}</td>
+                    <td>{{ $variant->stock }}</td>
+                    <td>{{ $variant->size }}</td>
+                    <td>{{ $variant->color }}</td>
+                    <td>Rp. {{ $variant->price }}</td>
+                    <td class="text-nowrap">{{ $variant->created_at->diffForHumans() }}</td>
+                    <td>
+                        <div class="flex gap-2">
+                            <x-action-button
+                                content="edit"
+                                btnType="{{ $showEdit == $variant->id ? 'btn btn-xs' : 'btn btn-warning btn-xs' }}"
+                                wire:click="setProduct({{ $variant->id }})"/>
+                            <x-action-button
+                                content="delete"
+                                wire:click="deleteProduct({{ $product->id }}, {{ $variant->id }})"
+                                wire:confirm="Are you sure delete {{ $product->name }}" />
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
         @endforeach
-    </x-table> --}}
+    </x-table>
+
+    <div class="mt-4">
+        {{ $products->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
+    </div>
 
 
-
-    <div class="flex">
-        <x-daisy-modal btnType="btn-sm btn-info" btnName="create" key="1">
+    <div class="flex {{ $showEdit !== null ? 'justify-evenly md:justify-normal gap-2' : '' }}">
+        <x-daisy-modal
+            btnType="btn-md btn-info md:btn-sm mt-2"
+            btnName="create new product"
+            key="1">
             <x-form-input
                 method="createProduct"
                 btnName="create"
@@ -77,11 +86,11 @@
 
         @if ($showEdit)
         <x-daisy-modal
-            btnType="btn-sm btn-success"
+            btnType="btn-md btn-success mt-2 md:btn-sm"
             key="2"
             btnName="update_{{ $productRequest->name }}">
             <x-form-input
-                method="createProduct"
+                method="updateProduct"
                 wire:key="{{ $showEdit ?? 'nothing' }}"
                 btnName="update"
                 :fields="[
@@ -123,4 +132,4 @@
         </x-daisy-modal>
         @endif
     </div>
-</div>
+</>

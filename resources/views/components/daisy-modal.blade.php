@@ -2,7 +2,7 @@
 @props(['title' => 'insert product', 'btnName' => 'create', 'btnType', 'key' => uniqid()])
 
 <div wire:ignore.self>
-    <button class="btn m-2 {{ $btnType }}" onclick="my_modal_{{ $key }}.showModal()">{{ $btnName }}</button>
+    <button class="btn {{ $btnType }}" onclick="my_modal_{{ $key }}.showModal()">{{ $btnName }}</button>
     <dialog id="my_modal_{{ $key }}" data-theme="light" class="modal modal-bottom sm:modal-middle" wire:ignore.self>
       <div class="modal-box">
         <h3 class="text-lg font-bold text-center">{{ ucwords($title) }}</h3>

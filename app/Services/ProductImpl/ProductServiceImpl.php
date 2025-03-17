@@ -15,8 +15,6 @@ class ProductServiceImpl implements ProductService {
                 ->where("name", strtolower(trim($product->category)))
                 ->first()->id;
 
-        // dd($categoryId->id);
-
         if ($categoryId == null) {
             $category = Category::create(['name' => strtolower($product->category)]);
             $categoryId = $category->id;
@@ -46,15 +44,18 @@ class ProductServiceImpl implements ProductService {
         return true;
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id_product, int $id_variant): void
     {
-        $product = Product::find($id);
+        $product = Product::find($id_product);
 
         if (!is_null($product)) {
-            $product->delete();
-            return true;
+            ProductVariant::find($id_variant)?->delete();
         }
 
-        return false;
+        $jmlVariant = $product->variants->count();
+
+        if ($jmlVariant < 1) {
+            $product->delete();
+        }
     }
 }
