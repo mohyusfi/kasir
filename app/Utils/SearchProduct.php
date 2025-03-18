@@ -6,7 +6,7 @@ use App\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 trait SearchProduct {
-    public string $inputSearchProduct;
+    public string $inputSearchProduct = '';
 
     public function searchProduct(): LengthAwarePaginator
     {

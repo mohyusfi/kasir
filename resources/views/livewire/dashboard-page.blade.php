@@ -1,6 +1,7 @@
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
     {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
-    <x-table :thead="['#', 'name', 'description', 'category', 'stock', 'size', 'color', 'price', 'added_at', 'action']">
+    <x-input-search-product/>
+    <x-table :thead="['#', 'name', 'description', 'category', 'stock', 'size', 'color', 'price', 'added_at', 'make transaction']">
         @php
             $row = 1;
         @endphp
@@ -28,8 +29,11 @@
                     <td>Rp. {{ $variant->price }}</td>
                     <td class="text-nowrap">{{ $variant->created_at->diffForHumans() }}</td>
                     <td>
-                        <div class="flex gap-2 items-center">
-
+                        <div class="flex gap-2 items-center w-full justify-center">
+                            <x-action-button
+                                btnType="btn btn-sm btn-warning text-gray-600"
+                                content="add"
+                            />
                         </div>
                     </td>
                 </tr>

@@ -3,16 +3,21 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use App\Utils\SearchProduct;
 use Livewire\Component;
 
 class DashboardPage extends Component
 {
+    use SearchProduct;
     public function render()
     {
-        return view('livewire.dashboard-page', [
-            'products' => Product::select(['id', 'name', 'description', 'category_id'])
+        $resultSearch = $this->searchProduct();
+        $products = $resultSearch->isNotEmpty() ? $resultSearch :
+                    Product::select(['id', 'name', 'description', 'category_id'])
                                 ->with(['category', 'variants'])
-                                ->paginate(3)
+                                ->paginate(2);
+        return view('livewire.dashboard-page', [
+            'products' => $products
         ]);
     }
 }
