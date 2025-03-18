@@ -9,6 +9,7 @@ use App\Utils\TraitSearch;
 use Livewire\Attributes\On;
 use App\Services\ProductService;
 use App\Livewire\Forms\ProductRequest;
+use App\Livewire\Forms\ProductVariantRequest;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\WithoutUrlPagination;
@@ -18,7 +19,7 @@ class ProductsPage extends Component
 {
     use TraitSearch, WithPagination, WithoutUrlPagination;
     public ProductRequest $productRequest;
-    // public $products = null;
+    public ProductVariantRequest $productVariantRequest;
     public ?int $showEdit = null;
     public ?int $product_id = null;
 
@@ -35,7 +36,7 @@ class ProductsPage extends Component
             'productRequest.name' => ['required', 'string', 'min:3', 'max:100'],
             'productRequest.description' => ['nullable', 'string'],
             'productRequest.stock' => ['required', 'integer'],
-            'productRequest.price' => ['required', 'numberic'],
+            'productRequest.price' => ['required', 'decimal'],
             'productRequest.category' => ['required', 'string'],
             'productRequest.color' => ['nullable', 'string'],
             'productRequest.size' => ['nullable', 'string'],
@@ -46,15 +47,34 @@ class ProductsPage extends Component
         session()->flash("message", "success create " . $result->name);
     }
 
-    public function updateProduct()
+    public function updateProduct(ProductService $productService)
     {
-        dd(['variant_id' => $this->showEdit, 'product_id' => $this->product_id]);
+        $this->validate([
+            'productRequest.name' => ['required', 'string', 'min:3', 'max:100'],
+            'productRequest.description' => ['nullable', 'string'],
+            'productRequest.stock' => ['required', 'integer'],
+            'productRequest.price' => ['required', 'numeric', 'decimal:2', 'min:0'],
+            'productRequest.category' => ['required', 'string'],
+            'productRequest.color' => ['nullable', 'string'],
+            'productRequest.size' => ['nullable', 'string'],
+        ]);
+
+        $productService->update($this->productRequest, $this->showEdit);
+
+        $this->dispatch('$refresh');
+
+        session()->flash("message", "success update ". $this->productRequest->name);
     }
 
     public function deleteProduct(int $id_product, int $id_variant, ProductService $productService)
     {
         $productService->delete($id_product, $id_variant);
         $this->dispatch('refresh');
+    }
+
+    public function createProductVariant(): void
+    {
+        $this->validate([]);
     }
 
     public function setProduct(int $id): void
@@ -68,9 +88,18 @@ class ProductsPage extends Component
             $this->productRequest->name = $product->name;
             $this->productRequest->description = $product->description;
             $this->search = $category->name;
+            $this->productRequest->category = $category->name;
             $this->productRequest->stock = $variant->stock;
             $this->productRequest->size = $variant->size;
             $this->productRequest->price = $variant->price;
+        } else {
+            $this->product_id = null;
+            $this->productRequest->name = '';
+            $this->productRequest->description = '';
+            $this->search = '';
+            $this->productRequest->stock = '';
+            $this->productRequest->size = '';
+            $this->productRequest->price = '';
         }
     }
 
@@ -78,7 +107,6 @@ class ProductsPage extends Component
     #[On('refresh')]
     public function loadComponent(): void
     {
-        // $this->products = Product::all();
         $this->dispatch('$refresh');
     }
     public function render()

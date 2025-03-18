@@ -20,7 +20,9 @@
                             {{ __('Products') }}
                         </x-nav-link>
                     @endcan
-
+                    <x-nav-link :href="route('products')" :active="request()->routeIs('products')">
+                        {{ __('History Activity') }}
+                    </x-nav-link>
                 </div>
             </div>
 

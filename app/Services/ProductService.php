@@ -8,6 +8,6 @@ use App\Models\Product;
 
 interface ProductService {
     public function create(ProductRequest $product): Product;
-    public function update(array $data, int $id): bool;
+    public function update(ProductRequest $product, int $id_variant): void;
     public function delete(int $id, int $id_variant): void;
 }
