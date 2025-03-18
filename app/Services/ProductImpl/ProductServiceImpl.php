@@ -3,6 +3,7 @@
 namespace App\Services\ProductImpl;
 
 use App\Livewire\Forms\ProductRequest;
+use App\Livewire\Forms\ProductVariantRequest;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductVariant;
@@ -37,6 +38,16 @@ class ProductServiceImpl implements ProductService {
         ]);
 
         return $result;
+    }
+
+    public function createVariant(ProductVariantRequest $productVariantRequest): ProductVariant
+    {
+        return ProductVariant::create([
+            'product_id' => $productVariantRequest->productId,
+            'size' => $productVariantRequest->size,
+            'color' => $productVariantRequest->color,
+            'price' => $productVariantRequest->price,
+        ]);
     }
 
     public function update(ProductRequest $product, int $id_variant): void

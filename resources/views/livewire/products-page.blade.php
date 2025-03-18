@@ -1,8 +1,4 @@
-<div class="max-w-7xl mx-auto sm:px-6 lg:px-8"
-        x-data="{
-            hidden : 'overflow-hidden block max-h-[10em]',
-            show : false
-        }">
+<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
     <x-table :thead="['#', 'name', 'description', 'category', 'stock', 'size', 'color', 'price', 'added_at', 'action']">
         @php
             $row = 1;
@@ -10,7 +6,10 @@
         @foreach ($products as $index => $product)
             @foreach ($product->variants as $variant)
                 <tr wire:key="{{ $product->id }}"
-                    {{-- class="cursor-pointer" --}}
+                    x-data="{
+                        hidden : 'overflow-hidden block max-h-[10em]',
+                        show : false
+                    }"
                     >
                     <td>{{ $row++ }}</td>
                     <td>{{ $product->name }}</td>
@@ -41,29 +40,36 @@
                                 btnType="btn-xs btn-info text-nowrap"
                                 btnName="new variant"
                                 title="insert new {{ $product->name }}"
-                            >
+                                key="{{ $product->id.'_'.$variant->id }}">
                             <x-form-input
-                            method="createProduct"
+                            method="createProductVariant({{ $variant->product_id }})"
                             btnName="create"
                             :fields="[
+                                'id' => [
+                                    'type' => 'number',
+                                    'directive' => 'productVariantRequest.productId',
+                                    'placeholder' => '100',
+                                    'hidden' => true,
+                                    'default' => '{{ $variant->product_id }}'
+                                ],
                                 'stock' => [
                                     'type' => 'number',
-                                    'directive' => 'productRequest.stock',
+                                    'directive' => 'productVariantRequest.stock',
                                     'placeholder' => '100',
                                 ],
                                 'price' => [
                                     'type' => 'text',
-                                    'directive' => 'productRequest.price',
+                                    'directive' => 'productVariantRequest.price',
                                     'placeholder' => '200000'
                                 ],
                                 'color' => [
                                     'type' => 'text',
-                                    'directive' => 'productRequest.color',
+                                    'directive' => 'productVariantRequest.color',
                                     'placeholder' => 'red',
                                 ],
                                 'size' => [
                                     'type' => 'text',
-                                    'directive' => 'productRequest.size',
+                                    'directive' => 'productVariantRequest.size',
                                     'placeholder' => '60ml',
                                 ],
                             ]" />

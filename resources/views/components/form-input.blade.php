@@ -22,7 +22,7 @@
     </div>
 
     <form wire:submit.prevent='{{ $method }}'
-        @submit="loading = true"
+        x-on:submit="loading = true"
         x-init="$watch('loading', value => { if (value) setTimeout(() => loading = false, 1000) })"
         {{ $attributes->merge() }} >
         @foreach ($fields as $key => $value)
@@ -46,7 +46,9 @@
                         :label="$key"
                         :placeholder="$value['placeholder']"
                         :type="$value['type']"
-                        wire:model="{{ $value['directive'] }}" />
+                        :hidden="$value['hidden'] ?? false"
+                        wire:model="{{ $value['directive'] }}"
+                     />
                 @endif
             </div>
         @endforeach

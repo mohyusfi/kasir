@@ -8,8 +8,8 @@ use Livewire\Form;
 class ProductVariantRequest extends Form
 {
     public int $productId;
-    public string $color;
-    public string $size;
-    public float $price;
-    public int $stock;
+    public ?string $color = null;
+    public ?string $size = null;
+    public string $price = '';
+    public int $stock = 0;
 }

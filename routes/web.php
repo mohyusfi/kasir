@@ -17,9 +17,9 @@ Route::get('/products', function () {
     return view('product');
 })->middleware(['auth', OnlyAdminMiddleware::class])->name('products');
 
-Route::get('/product/edit', function () {
-    return view('product-edit');
-})->middleware(['auth', OnlyAdminMiddleware::class])->name('product.edit');
+Route::get('/history-transaction', function () {
+
+})->middleware(['auth'])->name('history.transaction');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

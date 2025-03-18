@@ -10,8 +10,11 @@ use Livewire\Attributes\On;
 use App\Services\ProductService;
 use App\Livewire\Forms\ProductRequest;
 use App\Livewire\Forms\ProductVariantRequest;
+// use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Validation\Rule;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
@@ -72,9 +75,27 @@ class ProductsPage extends Component
         $this->dispatch('refresh');
     }
 
-    public function createProductVariant(): void
+    public function createProductVariant(int $productId, ProductService $productService): void
     {
-        $this->validate([]);
+        $this->productVariantRequest->productId = $productId;
+        $this->validate([
+            'productVariantRequest.productId' => ['required',
+                Rule::unique('product_variants', 'product_id')->where(function(Builder $query){
+                    $query->where('size', $this->productVariantRequest->size)
+                            ->where('color', $this->productVariantRequest->color)
+                            ->where('stock', $this->productVariantRequest->stock)
+                            ->where('price', $this->productVariantRequest->price);
+                })
+            ],
+            'productVariantRequest.stock' => ['required', 'integer', 'min:0'],
+            'productVariantRequest.price' => ['required', 'numeric', 'decimal:2', 'min:0'],
+            'productVariantRequest.color' => ['nullable', 'string'],
+            'productVariantRequest.size' => ['nullable', 'string'],
+        ]);
+
+        $variant = $productService->createVariant($this->productVariantRequest);
+        $this->reset('productVariantRequest');
+        session()->flash("message", "success add variant product : " . $variant->product->name);
     }
 
     public function setProduct(int $id): void
@@ -95,11 +116,8 @@ class ProductsPage extends Component
         } else {
             $this->product_id = null;
             $this->productRequest->name = '';
-            $this->productRequest->description = '';
+            $this->reset('productRequest');
             $this->search = '';
-            $this->productRequest->stock = '';
-            $this->productRequest->size = '';
-            $this->productRequest->price = '';
         }
     }
 
@@ -108,6 +126,13 @@ class ProductsPage extends Component
     public function loadComponent(): void
     {
         $this->dispatch('$refresh');
+    }
+
+    protected function messages()
+    {
+        return [
+            'productVariantRequest.productId.unique' => 'this variant already exists'
+        ];
     }
     public function render()
     {

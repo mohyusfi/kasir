@@ -7,10 +7,10 @@ use Livewire\Form;
 
 class ProductRequest extends Form
 {
-    public string $name;
-    public string $description;
+    public ?string $name = null;
+    public ?string $description = null;
     public string $category;
-    public string $stock;
+    public int $stock;
     public ?string $color = null;
     public ?string $size = null;
     public string $price;
