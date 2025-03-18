@@ -138,8 +138,8 @@ class ProductsPage extends Component
     {
         return view('livewire.products-page', [
             'products' => Product::select(['id', 'name', 'description', 'category_id'])
-            ->with(['category', 'variants'])
-            ->paginate(3)
+                                    ->with(['category', 'variants'])
+                                    ->paginate(3)
         ]);
     }
 }
