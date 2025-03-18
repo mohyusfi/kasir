@@ -18,7 +18,7 @@ Route::get('/products', function () {
 })->middleware(['auth', OnlyAdminMiddleware::class])->name('products');
 
 Route::get('/history-transaction', function () {
-
+    return view('history-product');
 })->middleware(['auth'])->name('history.transaction');
 
 Route::middleware('auth')->group(function () {
