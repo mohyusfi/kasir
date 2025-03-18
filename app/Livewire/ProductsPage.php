@@ -10,7 +10,7 @@ use Livewire\Attributes\On;
 use App\Services\ProductService;
 use App\Livewire\Forms\ProductRequest;
 use App\Livewire\Forms\ProductVariantRequest;
-// use Illuminate\Contracts\Database\Eloquent\Builder;
+use App\Utils\TraitSearchCategory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -20,7 +20,7 @@ use Livewire\WithPagination;
 
 class ProductsPage extends Component
 {
-    use TraitSearch, WithPagination, WithoutUrlPagination;
+    use TraitSearchCategory, WithPagination, WithoutUrlPagination;
     public ProductRequest $productRequest;
     public ProductVariantRequest $productVariantRequest;
     public ?int $showEdit = null;

@@ -4,7 +4,7 @@ namespace App\Utils;
 
 use App\Models\Category;
 
-trait TraitSearch {
+trait TraitSearchCategory {
     public string $search;
     public ?array $result = null;
     public array $myAttribute;
