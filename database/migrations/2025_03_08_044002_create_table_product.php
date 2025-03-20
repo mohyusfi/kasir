@@ -38,9 +38,11 @@ return new class extends Migration
 
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('created_at')->nullable(false)->useCurrent();
-            $table->unsignedBigInteger('totalPrice')->nullable(false)->default(0);
             $table->unsignedBigInteger('cashier_id')->nullable(false);
+            $table->unsignedBigInteger('totalPrice')->nullable(false)->default(0);
+            $table->enum('status', ['pending', 'completed', 'failed'])
+                        ->nullable(false)->default('pending');
+            $table->timestamp('created_at')->nullable(false)->useCurrent();
             $table->foreign('cashier_id', 'fk_cashier_id')->references('id')->on('users');
         });
 

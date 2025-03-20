@@ -1,4 +1,4 @@
-@props(['thead'])
+@props(['thead', 'hasContent' => false])
 
 <div class="overflow-x-auto">
     <table class="table">
@@ -11,7 +11,15 @@
             </tr>
         </thead>
         <tbody>
-            {{ $slot }}
+            @if ($hasContent)
+                {{ $slot }}
+            @else
+                <tr class="border-none">
+                    <td colspan="{{ count($thead) }}">
+                        <h1 class="text-center text-xl">No Product</h1>
+                    </td>
+                </tr>
+            @endif
         </tbody>
     </table>
 </div>

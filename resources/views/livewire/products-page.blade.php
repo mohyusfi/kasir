@@ -1,5 +1,7 @@
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-    <x-table :thead="['#', 'name', 'description', 'category', 'stock', 'size', 'color', 'price', 'added_at', 'action']">
+    <x-table
+        :thead="['#', 'name', 'description', 'category', 'stock', 'size', 'color', 'price', 'added_at', 'action']"
+        :hasContent="count($products) > 0 ? true : false">
         @php
             $row = 1;
         @endphp
@@ -24,55 +26,61 @@
                     <td>{{ $variant->stock }}</td>
                     <td>{{ $variant->size }}</td>
                     <td>{{ $variant->color }}</td>
-                    <td>Rp. {{ $variant->price }}</td>
+                    <td class="text-nowrap">Rp. {{ number_format($variant->price, 0) }}</td>
                     <td class="text-nowrap">{{ $variant->created_at->diffForHumans() }}</td>
                     <td>
                         <div class="flex gap-2 items-center">
                             <x-action-button
-                                content="edit"
-                                btnType="{{ $showEdit == $variant->id ? 'btn btn-xs' : 'btn btn-warning btn-xs' }}"
-                                wire:click="setProduct({{ $variant->id }})"/>
+                                btnType=""
+                                wire:click="setProduct({{ $variant->id }})">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 {{ $showEdit !== null ? 'text-black' : 'text-orange-400' }}">
+                                    <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+                                    <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+                                  </svg>
+                            </x-action-button>
                             <x-action-button
-                                content="delete"
+                                btnType=""
                                 wire:click="deleteProduct({{ $product->id }}, {{ $variant->id }})"
-                                wire:confirm="Are you sure delete {{ $product->name }}" />
+                                wire:confirm="Are you sure delete {{ $product->name }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-red-600">
+                                    <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
+                                  </svg>
+
+                            </x-action-button>
                             <x-daisy-modal
-                                btnType="btn-xs btn-info text-nowrap"
-                                btnName="new variant"
+                                btnType=""
                                 title="insert new {{ $product->name }}"
                                 key="{{ $product->id.'_'.$variant->id }}">
-                            <x-form-input
-                            method="createProductVariant({{ $variant->product_id }})"
-                            btnName="create"
-                            :fields="[
-                                'id' => [
-                                    'type' => 'number',
-                                    'directive' => 'productVariantRequest.productId',
-                                    'placeholder' => '100',
-                                    'hidden' => true,
-                                    'default' => '{{ $variant->product_id }}'
-                                ],
-                                'stock' => [
-                                    'type' => 'number',
-                                    'directive' => 'productVariantRequest.stock',
-                                    'placeholder' => '100',
-                                ],
-                                'price' => [
-                                    'type' => 'text',
-                                    'directive' => 'productVariantRequest.price',
-                                    'placeholder' => '200000'
-                                ],
-                                'color' => [
-                                    'type' => 'text',
-                                    'directive' => 'productVariantRequest.color',
-                                    'placeholder' => 'red',
-                                ],
-                                'size' => [
-                                    'type' => 'text',
-                                    'directive' => 'productVariantRequest.size',
-                                    'placeholder' => '60ml',
-                                ],
-                            ]" />
+                                <x-slot:btnName>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-7 text-blue-600">
+                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z" clip-rule="evenodd" />
+                                      </svg>
+                                </x-slot:btnName>
+                                <x-form-input
+                                method="createProductVariant({{ $variant->product_id }})"
+                                btnName="create"
+                                :fields="[
+                                    'stock' => [
+                                        'type' => 'number',
+                                        'directive' => 'productVariantRequest.stock',
+                                        'placeholder' => '100',
+                                    ],
+                                    'price' => [
+                                        'type' => 'text',
+                                        'directive' => 'productVariantRequest.price',
+                                        'placeholder' => '200000'
+                                    ],
+                                    'color' => [
+                                        'type' => 'text',
+                                        'directive' => 'productVariantRequest.color',
+                                        'placeholder' => 'red',
+                                    ],
+                                    'size' => [
+                                        'type' => 'text',
+                                        'directive' => 'productVariantRequest.size',
+                                        'placeholder' => '60ml',
+                                    ],
+                                ]" />
                             </x-daisy-modal>
                         </div>
                     </td>
@@ -88,9 +96,11 @@
 
     <div class="flex {{ $showEdit !== null ? 'justify-evenly md:justify-normal gap-2' : '' }}">
         <x-daisy-modal
-            btnType="btn-md btn-info md:btn-sm mt-2"
-            btnName="create new product"
+            btnType="btn btn-md btn-info md:btn-sm mt-2"
             key="1">
+            <x-slot:btnName>
+                create new product
+            </x-slot:btnName>
             <x-form-input
                 method="createProduct"
                 btnName="create"
@@ -102,7 +112,7 @@
                     ],
                     'stock' => [
                         'type' => 'number',
-                        'directive' => 'productRequest.stock',
+                        'directive' => 'productRequest.quantity',
                         'placeholder' => '100',
                     ],
                     'price' => [
@@ -134,9 +144,11 @@
 
         @if ($showEdit)
         <x-daisy-modal
-            btnType="btn-md btn-success mt-2 md:btn-sm"
-            key="2"
-            btnName="update_{{ $productRequest->name }}">
+            btnType="btn btn-md btn-success mt-2 md:btn-sm"
+            key="2">
+            <x-slot:btnName>
+                update_{{ $productRequest->name }}
+            </x-slot:btnName>
             <x-form-input
                 method="updateProduct"
                 wire:key="{{ $showEdit ?? 'nothing' }}"
@@ -159,7 +171,7 @@
                     ],
                     'stock' => [
                         'type' => 'number',
-                        'directive' => 'productRequest.stock',
+                        'directive' => 'productRequest.quantity',
                         'placeholder' => '100',
                     ],
                     'color' => [

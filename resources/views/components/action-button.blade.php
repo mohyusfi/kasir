@@ -1,4 +1,4 @@
-@props(['content', 'btnType' => 'btn btn-error btn-xs'])
+@props(['btnType' => 'btn btn-error btn-xs'])
 
 
 <div>
@@ -6,5 +6,5 @@
         type="button"
         class="{{ $btnType }}"
         {{ $attributes }}
-        >{{ $content }}</button>
+        >{{ $slot }}</button>
 </div>

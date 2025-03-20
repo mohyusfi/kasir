@@ -8,13 +8,14 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Services\ProductService;
+use Exception;
 
 class ProductServiceImpl implements ProductService {
     public function create(ProductRequest $product): Product
     {
         $categoryId = Category::select("id")
                 ->where("name", strtolower(trim($product->category)))
-                ->first()->id;
+                ->first()?->id;
 
         if ($categoryId == null) {
             $category = Category::create(['name' => strtolower($product->category)]);
@@ -27,6 +28,16 @@ class ProductServiceImpl implements ProductService {
             'category_id' => $categoryId,
         ]);
 
+        $isVariantExists = ProductVariant::select('id')
+                                        ->where('product_id', $result->id)
+                                        ->where('size', $product->size)
+                                        ->where('color', $product->color)
+                                        ->where('price', $product->price)
+                                        ->first();
+        if ($isVariantExists !== null) {
+            throw new Exception('variant already exists');
+        }
+
         $productId = $result->id;
 
         ProductVariant::create([
@@ -34,7 +45,7 @@ class ProductServiceImpl implements ProductService {
             'color' => $product->color,
             'size' => $product->size,
             'price' => $product->price,
-            'stock' => $product->stock,
+            'stock' => $product->quantity,
         ]);
 
         return $result;
@@ -44,6 +55,7 @@ class ProductServiceImpl implements ProductService {
     {
         return ProductVariant::create([
             'product_id' => $productVariantRequest->productId,
+            'stock' => $productVariantRequest->stock,
             'size' => $productVariantRequest->size,
             'color' => $productVariantRequest->color,
             'price' => $productVariantRequest->price,
@@ -76,7 +88,7 @@ class ProductServiceImpl implements ProductService {
             "color" => $product->color,
             "size" => $product->size,
             "price" => $product->price,
-            "stock" => $product->stock,
+            "stock" => $product->quantity,
         ]);
     }
 

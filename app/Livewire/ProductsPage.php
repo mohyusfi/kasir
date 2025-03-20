@@ -2,21 +2,24 @@
 
 namespace App\Livewire;
 
+use Exception;
 use App\Models\Product;
-use App\Models\ProductVariant;
 use Livewire\Component;
 use App\Utils\TraitSearch;
 use Livewire\Attributes\On;
-use App\Services\ProductService;
-use App\Livewire\Forms\ProductRequest;
-use App\Livewire\Forms\ProductVariantRequest;
-use App\Utils\TraitSearchCategory;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Validation\Rule;
-use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
+use App\Models\ProductVariant;
+use Illuminate\Validation\Rule;
+use App\Services\ProductService;
+use App\Utils\TraitSearchCategory;
+use Illuminate\Support\Facades\DB;
+use Livewire\WithoutUrlPagination;
+use App\Livewire\Forms\ProductRequest;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use App\Livewire\Forms\ProductVariantRequest;
+use Illuminate\Database\QueryException;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductsPage extends Component
 {
@@ -35,19 +38,26 @@ class ProductsPage extends Component
 
     public function createProduct(ProductService $productService)
     {
-        $this->validate([
-            'productRequest.name' => ['required', 'string', 'min:3', 'max:100'],
-            'productRequest.description' => ['nullable', 'string'],
-            'productRequest.stock' => ['required', 'integer'],
-            'productRequest.price' => ['required', 'decimal'],
-            'productRequest.category' => ['required', 'string'],
-            'productRequest.color' => ['nullable', 'string'],
-            'productRequest.size' => ['nullable', 'string'],
-        ]);
+        try {
+            DB::beginTransaction();
+            $this->validate([
+                'productRequest.name' => ['required', 'string', 'min:3', 'max:100'],
+                'productRequest.description' => ['nullable', 'string'],
+                'productRequest.quantity' => ['required', 'integer'],
+                'productRequest.price' => ['required', 'decimal:2'],
+                'productRequest.category' => ['required', 'string'],
+                'productRequest.color' => ['nullable', 'string'],
+                'productRequest.size' => ['nullable', 'string'],
+            ]);
 
-        $result = $productService->create($this->productRequest);
+            $result = $productService->create($this->productRequest);
 
-        session()->flash("message", "success create " . $result->name);
+            session()->flash("message", "success create " . $result->name);
+            DB::commit();
+        } catch (Exception|QueryException $exception) {
+            DB::rollBack();
+            $this->addError('variant', $exception->getMessage());
+        }
     }
 
     public function updateProduct(ProductService $productService)
@@ -55,7 +65,7 @@ class ProductsPage extends Component
         $this->validate([
             'productRequest.name' => ['required', 'string', 'min:3', 'max:100'],
             'productRequest.description' => ['nullable', 'string'],
-            'productRequest.stock' => ['required', 'integer'],
+            'productRequest.quantity' => ['required', 'integer', 'min:0'],
             'productRequest.price' => ['required', 'numeric', 'decimal:2', 'min:0'],
             'productRequest.category' => ['required', 'string'],
             'productRequest.color' => ['nullable', 'string'],
@@ -81,9 +91,8 @@ class ProductsPage extends Component
         $this->validate([
             'productVariantRequest.productId' => ['required',
                 Rule::unique('product_variants', 'product_id')->where(function(Builder $query){
-                    $query->where('size', $this->productVariantRequest->size)
-                            ->where('color', $this->productVariantRequest->color)
-                            ->where('stock', $this->productVariantRequest->stock)
+                    $query->where('size', strtolower(trim($this->productVariantRequest->size)))
+                            ->where('color', strtolower(trim($this->productVariantRequest->color)))
                             ->where('price', $this->productVariantRequest->price);
                 })
             ],
@@ -110,7 +119,7 @@ class ProductsPage extends Component
             $this->productRequest->description = $product->description;
             $this->search = $category->name;
             $this->productRequest->category = $category->name;
-            $this->productRequest->stock = $variant->stock;
+            $this->productRequest->quantity = $variant->stock;
             $this->productRequest->size = $variant->size;
             $this->productRequest->price = $variant->price;
         } else {
