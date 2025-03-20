@@ -24,7 +24,8 @@ class Product extends Model
 
     public function variants(): HasMany
     {
-        return $this->hasMany(ProductVariant::class, 'product_id', 'id');
+        return $this->hasMany(ProductVariant::class, 'product_id', 'id')
+                        ->where('stock', '>', 0);
     }
 
     public function transactions(): BelongsToMany

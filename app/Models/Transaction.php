@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Transaction extends Model
 {
@@ -14,14 +15,8 @@ class Transaction extends Model
         'status',
     ];
 
-    public function products(): BelongsToMany
+    public function details(): HasMany
     {
-        return $this->belongsToMany(
-            Product::class,
-            "transaction_details",
-            'transaction_id',
-            'product_id')
-            ->withPivot('quantity', 'sub_total')
-            ->withTimestamps();
+        return $this->hasMany(TransactionDetail::class);
     }
 }

@@ -14,9 +14,10 @@ use Livewire\WithPagination;
 class DashboardPage extends Component
 {
     use SearchProduct, WithPagination, WithoutUrlPagination;
-    public function createTransaction(int $producId, int $variant_id, TransactionService $transactionService)
+    public function createTransaction(int $variant_id, TransactionService $transactionService)
     {
-        $transactionService->makeTransaction(Auth::user()->id, $producId, $variant_id);
+        $transactionService->makeTransaction(Auth::user()->id, $variant_id);
+        $this->dispatch('$refresh');
     }
     public function render()
     {
@@ -25,11 +26,13 @@ class DashboardPage extends Component
                     Product::select(['id', 'name', 'description', 'category_id'])
                                 ->with(['category', 'variants'])
                                 ->paginate(2);
-        $data_transaction = Transaction::where("cashier_id", Auth::user()->id)
+        $transaction = Transaction::where("cashier_id", Auth::user()->id)
                                         ->where("status", "pending")->first();
+        $transaction_details = $transaction?->details;
         return view('livewire.dashboard-page', [
             'products' => $products,
-            'transactions' => $data_transaction
+            'transactions' => $transaction,
+            'transaction_details' => $transaction_details,
         ]);
     }
 }

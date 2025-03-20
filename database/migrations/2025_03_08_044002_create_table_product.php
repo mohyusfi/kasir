@@ -49,13 +49,13 @@ return new class extends Migration
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('transaction_id')->nullable(false);
-            $table->unsignedBigInteger('product_id')->nullable(false);
+            $table->unsignedBigInteger('variant_id')->nullable(false);
             $table->unsignedInteger('quantity')->nullable(false)->default(0);
-            $table->unsignedBigInteger('sub_total')->nullable(false)->default(0);
+            $table->decimal('sub_total', 10)->nullable(false)->default(0);
             $table->timestamps();
-            $table->unique(['transaction_id', 'product_id']);
+            $table->unique(['transaction_id', 'variant_id']);
             $table->foreign('transaction_id')->references('id')->on('transactions');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('variant_id')->references('id')->on('product_variants');
         });
     }
 

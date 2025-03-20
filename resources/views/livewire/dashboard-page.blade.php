@@ -7,7 +7,7 @@
         @php
             $row = 1;
         @endphp
-        @foreach ($products as $index => $product)
+        @foreach ($products ?? [] as $index => $product)
             @foreach ($product->variants as $variant)
                 <tr wire:key="{{ $product->id }}"
                     x-data="{
@@ -33,7 +33,7 @@
                     <td>
                         <div class="flex gap-2 items-center w-full justify-center">
                             <x-action-button
-                                wire:click='createTransaction({{ $variant->product_id }}, {{ $variant->id }})'
+                                wire:click='createTransaction({{ $variant->id }})'
                                 btnType="">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="size-10 text-blue-500 hover:text-blue-700 transition-all duration-[.2s]">
@@ -58,8 +58,11 @@
             <div class="bg-white shadow-lg p-6 rounded-2xl">
                 <h2 class="text-xl font-semibold mb-4">Produk yang Dipesan</h2>
                 <div class="space-y-4">
-                    @foreach ($transactions->products ?? [] as $item)
-                    <div class="flex items-center border-b pb-4" wire:key='{{ $item->id }}'>
+                    @foreach ($transaction_details ?? [] as $item)
+                    {{-- @php
+                    var_dump($item->quantity);
+                    @endphp --}}
+                    <div class="flex items-center border-b pb-4">
                         <div class="flex items-center justify-center gap-2">
                             <button>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 text-blue-500">
@@ -74,10 +77,15 @@
                             </button>
                         </div>
                         <div class="ml-4 flex-1">
-                            <p class="font-medium">{{ $item->name }}</p>
-                            <p class="text-gray-500 text-sm">Rp {{ number_format($item->pivot->sub_total) }}</p>
+                            <p class="font-medium text-gray-800">{{ $item->productVariant->product->name ?? '' }}</p>
+                            <p class="text-sm">
+                                <span>size: {{$item->productVariant?->size ?? '' }}, </span>
+                                <span>color: {{ $item->productVariant?->color ?? ''}}, </span>
+                                <span>price/unit: Rp. {{ $item->productVariant?->price ?? ''}}, </span>
+                            </p>
+                            <p class="text-gray-500 text-sm">Rp {{ number_format($item->sub_total) }}</p>
                         </div>
-                        <p class="font-semibold">x{{ $item->pivot->quantity }}</p>
+                        <p class="font-semibold">x{{ $item->quantity }}</p>
                     </div>
                     @endforeach
                 </div>
