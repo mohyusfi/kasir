@@ -19,6 +19,12 @@ class DashboardPage extends Component
         $transactionService->makeTransaction(Auth::user()->id, $variant_id);
         $this->dispatch('$refresh');
     }
+
+    public function deleteOrderedItem(int $transaction_id, int $variant_id, TransactionService $transactionService): void
+    {
+        // dd([$transaction_id, $variant_id]);
+        $transactionService->deleteItem($transaction_id, $variant_id);
+    }
     public function render()
     {
         $resultSearch = $this->searchProduct();

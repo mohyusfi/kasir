@@ -64,4 +64,22 @@ class TransactionServiceImpl implements TransactionService {
             }
         }
     }
+
+    public function deleteItem(int $transaction_id, int $variant_id): void
+    {
+        $transaction = Transaction::find($transaction_id);
+        if ($transaction !== null) {
+            $item = $transaction->details()->where('variant_id', $variant_id);
+            $variantProduct = ProductVariant::find($variant_id);
+            
+            $stock = $variantProduct->stock;
+            $qty = $item->first()->quantity;
+            $sub_total = $item->first()->sub_total;
+            $totalPrice = $transaction->totalPrice;
+
+            $item->delete();
+            $transaction->update(['totalPrice' => $totalPrice - $sub_total]);
+            $variantProduct->update(['stock' => $stock + $qty]);
+        }
+    }
 }
