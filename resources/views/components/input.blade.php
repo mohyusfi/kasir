@@ -1,9 +1,9 @@
-@props(['type' => 'text', 'name', 'label' => '', 'placeholder' => '', 'hidden' => false])
+@props(['type' => 'text', 'name', 'label' => true, 'placeholder' => '', 'hidden' => false])
 
 <div>
     <label
         for="{{ $name }}"
-        class="font-medium text-sm {{ $hidden ? 'hidden' : 'block' }}">
+        class="font-medium text-sm {{ $label ? 'hidden' : 'block' }}">
         {{ ucfirst($label) }}</label>
     <input
         type="{{ $type }}"

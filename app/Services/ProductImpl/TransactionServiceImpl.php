@@ -3,10 +3,11 @@
 namespace App\Services\ProductImpl;
 
 use App\Models\Product;
-use App\Models\ProductVariant;
 use App\Models\Transaction;
+use App\Models\ProductVariant;
 use App\Models\TransactionDetail;
 use App\Services\TransactionService;
+use Exception ;
 
 class TransactionServiceImpl implements TransactionService {
     public function makeTransaction(int $cashierId, int $variant_id): void
@@ -71,7 +72,7 @@ class TransactionServiceImpl implements TransactionService {
         if ($transaction !== null) {
             $item = $transaction->details()->where('variant_id', $variant_id);
             $variantProduct = ProductVariant::find($variant_id);
-            
+
             $stock = $variantProduct->stock;
             $qty = $item->first()->quantity;
             $sub_total = $item->first()->sub_total;
@@ -82,4 +83,32 @@ class TransactionServiceImpl implements TransactionService {
             $variantProduct->update(['stock' => $stock + $qty]);
         }
     }
+
+    public function updateItemQty(int $transaction_id, int $variant_id, int $quantity): void
+    {
+        $transaction = Transaction::find($transaction_id);
+        $variantProduct = ProductVariant::find($variant_id);
+        if ($transaction !== null)
+            if ($variantProduct->stock < $quantity) { throw new Exception("stock is not enough"); }
+
+            $sub_total = $variantProduct->price * $quantity;
+            $previousStock = $transaction->details()
+                ->where('variant_id', $variant_id)
+                ->first()->quantity + $variantProduct->stock;
+
+            $transaction->details()->where('variant_id', $variant_id)->update([
+                'quantity' => $quantity,
+                'sub_total' => $sub_total,
+            ]);
+
+            $totalPrice = $transaction->details->sum('sub_total');
+
+            $variantProduct->update([
+                'stock' => $previousStock - $quantity,
+            ]);
+            $transaction->update([
+                'totalPrice' => $totalPrice,
+            ]);
+    }
+
 }

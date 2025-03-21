@@ -59,7 +59,7 @@
                 <h2 class="text-xl font-semibold mb-4">Produk yang Dipesan</h2>
                 <div class="space-y-4">
                     @foreach ($transaction_details ?? [] as $item)
-                    <div class="flex items-center border-b pb-4">
+                    <div class="flex items-center border-b pb-4" x-data="{ hidden: false }">
                         <div class="flex items-center justify-center gap-2">
                             <button
                                 wire:click="deleteOrderedItem({{ $item->transaction_id }}, {{ $item->variant_id }})">
@@ -67,8 +67,10 @@
                                     <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
                                   </svg>
                             </button>
-                            <button>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 text-black">
+                            <button
+                                x-on:click="hidden = ! hidden; console.log(hidden);">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8"
+                                :class="hidden ? 'text-green-800' : 'text-green-500'">
                                     <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
                                     <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
                                   </svg>
@@ -77,13 +79,40 @@
                         <div class="ml-4 flex-1">
                             <p class="font-medium text-gray-800">{{ $item->productVariant->product->name ?? '' }}</p>
                             <p class="text-sm">
-                                <span>size: {{$item->productVariant?->size ?? '' }}, </span>
-                                <span>color: {{ $item->productVariant?->color ?? ''}}, </span>
+                                <span x-show="hidden == false">
+                                    size: {{$item->productVariant?->size ?? '' }},
+                                </span>
+                                <span x-show="hidden == false">
+                                    color: {{ $item->productVariant?->color ?? ''}},
+                                </span>
                                 <span>price/unit: Rp. {{ $item->productVariant?->price ?? ''}}, </span>
                             </p>
-                            <p class="text-gray-500 text-sm">Rp {{ number_format($item->sub_total) }}</p>
+                            <p
+                                class="text-gray-500 text-sm" \
+                                x-show="hidden == false">Rp {{ number_format($item->sub_total) }}</p>
                         </div>
-                        <p class="font-semibold">x{{ $item->quantity }}</p>
+                        <p class="font-semibold" x-show="hidden == false">x{{ $item->quantity }}</p>
+                        <form
+                            wire:submit.prevent="updateItemQty({{ $item->transaction_id }}, {{ $item->variant_id }})"
+                            class="flex gap-2 items-center" x-show="hidden == true">
+                            <div>
+                                @error('productQty')
+                                    <p class="text-red-600 text-[10px]">{{ $message }}</p>
+                                @enderror
+
+                                <x-input
+                                    type="text"
+                                    name="qty"
+                                    placeholder="qty"
+                                    wire:model="productQty"
+                                    class="w-[5em]"/>
+                            </div>
+                            <button type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 text-blue-500 hover:text-blue-700">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                  </svg>
+                            </button>
+                        </form>
                     </div>
                     @endforeach
                 </div>
