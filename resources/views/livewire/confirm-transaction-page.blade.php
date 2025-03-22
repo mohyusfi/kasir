@@ -1,4 +1,4 @@
-<div class="md:mt-20">
+<div class="md:mt-20 h-screen">
     <div class="bg-white shadow-lg rounded-lg p-6 w-96">
         <h2 class="receipt text-xl font-semibold text-gray-800 mb-4 text-center">Konfirmasi Transaksi</h2>
         <div class="receipt border-t border-b py-4 mb-4">
@@ -44,8 +44,10 @@
         <div class="flex gap-2">
             <button type="button" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
                 wire:click="confirmTransaction({{ $transaction->id }})">Konfirmasi</button>
+            @if ($transaction->status === "completed")
             <button class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
                 onclick="window.print()">PRINT</button>
+            @endif
         </div>
         <a href="{{ route('dashboard') }}">
             <button class="w-full my-2 bg-red-600 text-white py-2 rounded-md hover:bg-red-700">BACK</button>

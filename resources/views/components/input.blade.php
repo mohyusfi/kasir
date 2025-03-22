@@ -3,7 +3,7 @@
 <div>
     <label
         for="{{ $name }}"
-        class="font-medium text-sm {{ $label ? 'hidden' : 'block' }}">
+        class="font-medium text-sm {{ $label ? 'block' : 'hidden' }}">
         {{ ucfirst($label) }}</label>
     <input
         type="{{ $type }}"

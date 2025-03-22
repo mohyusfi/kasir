@@ -16,7 +16,7 @@ class TransactionServiceImpl implements TransactionService {
                                     ->where('status', 'pending')->first();
         $productVariant = ProductVariant::find($variant_id);
         $currentQty = $productVariant->stock;
-        if ($transaction === null) {
+        if ($transaction === null && $productVariant->stock > 0) {
             $transaction = Transaction::create([
                 'cashier_id' => $cashierId,
                 'totalPrice' => $productVariant->price,
@@ -32,36 +32,39 @@ class TransactionServiceImpl implements TransactionService {
                 'stock' => $currentQty - 1,
             ]);
         } else {
-            $details = $transaction->details()->where('transaction_id', $transaction->id)
-                                                ->where('variant_id', $productVariant->id)
-                                                ->first();
-            if ($details === null) {
-                TransactionDetail::create([
-                    'transaction_id' => $transaction->id,
-                    'variant_id' => $productVariant->id,
-                    'quantity' => 1,
-                    'sub_total' => $productVariant->price,
-                ]);
-                $productVariant->update([
-                    'stock' => $currentQty - 1,
-                ]);
-                $totalPrice = $transaction->details()->get()->sum('sub_total');
-                $transaction->update([
-                    'totalPrice' => $totalPrice
-                ]);
-            } else {
-                $qty = $details->quantity + 1;
-                $details->update([
-                    'quantity' => $qty,
-                    'sub_total' => $productVariant->price * $qty,
-                ]);
-                $productVariant->update([
-                    'stock' => $currentQty - 1,
-                ]);
-                $totalPrice = $transaction->details()->get()->sum('sub_total');
-                $transaction->update([
-                    'totalPrice' => $totalPrice,
-                ]);
+            if ($productVariant->stock > 0) {
+
+                $details = $transaction->details()->where('transaction_id', $transaction->id)
+                                                    ->where('variant_id', $productVariant->id)
+                                                    ->first();
+                if ($details === null) {
+                    TransactionDetail::create([
+                        'transaction_id' => $transaction->id,
+                        'variant_id' => $productVariant->id,
+                        'quantity' => 1,
+                        'sub_total' => $productVariant->price,
+                    ]);
+                    $productVariant->update([
+                        'stock' => $currentQty - 1,
+                    ]);
+                    $totalPrice = $transaction->details()->get()->sum('sub_total');
+                    $transaction->update([
+                        'totalPrice' => $totalPrice
+                    ]);
+                } else {
+                    $qty = $details->quantity + 1;
+                    $details->update([
+                        'quantity' => $qty,
+                        'sub_total' => $productVariant->price * $qty,
+                    ]);
+                    $productVariant->update([
+                        'stock' => $currentQty - 1,
+                    ]);
+                    $totalPrice = $transaction->details()->get()->sum('sub_total');
+                    $transaction->update([
+                        'totalPrice' => $totalPrice,
+                    ]);
+                }
             }
         }
     }

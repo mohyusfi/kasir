@@ -1,4 +1,4 @@
-<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 h-screen">
     {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
     <x-input-search-product/>
     <x-table
@@ -51,7 +51,7 @@
         {{ $products->links(data: ['scrollTo' => false]) }}
     </div>
 
-    <div class="container mx-auto">
+    <div class="container mx-auto mt-4">
         <!-- Layout Container -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Order Section -->
@@ -88,7 +88,7 @@
                                 <span>price/unit: Rp. {{ $item->productVariant?->price ?? ''}}, </span>
                             </p>
                             <p
-                                class="text-gray-500 text-sm" \
+                                class="text-gray-500 text-sm"
                                 x-show="hidden == false">Rp {{ number_format($item->sub_total) }}</p>
                         </div>
                         <p class="font-semibold" x-show="hidden == false">x{{ $item->quantity }}</p>
@@ -103,6 +103,7 @@
                                 <x-input
                                     type="text"
                                     name="qty"
+                                    :label="false"
                                     placeholder="qty"
                                     wire:model="productQty"
                                     class="w-[5em]"/>
