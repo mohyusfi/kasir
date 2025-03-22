@@ -66,6 +66,14 @@ class TransactionServiceImpl implements TransactionService {
         }
     }
 
+    public function confirmTransaction(int $transaction_id): void
+    {
+        $transaction = Transaction::find($transaction_id);
+        if ($transaction !== null) {
+            $transaction->update(['status' => 'completed']);
+        }
+    }
+
     public function deleteItem(int $transaction_id, int $variant_id): void
     {
         $transaction = Transaction::find($transaction_id);

@@ -1,6 +1,3 @@
-@extends('layouts.transaction')
-
-@section('content')
 <div class="md:mt-20">
     <div class="bg-white shadow-lg rounded-lg p-6 w-96">
         <h2 class="receipt text-xl font-semibold text-gray-800 mb-4 text-center">Konfirmasi Transaksi</h2>
@@ -36,18 +33,22 @@
                 <span>Date:</span>
                 <span class="font-medium">{{ $transaction->created_at }}</span>
             </div>
+            <div class="flex justify-between text-gray-600 mt-2">
+                <span>Status:</span>
+                <span
+                    class="font-medium  px-2 rounded-md {{ $transaction->status == "completed" ? 'bg-green-500' : 'bg-orange-300' }}">{{ $transaction->status }}</span>
+            </div>
         </div>
-        <h2 class="salam text-xl font-semibold text-gray-800 uppercase mb-4 text-center">Terima Kasih Telah Belanja di YUSFI SHOP</h2>
+        <h2 class="salam text-xl font-semibold text-gray-800 uppercase mb-4 text-center">Terima Kasih Telah Belanja di
+            YUSFI SHOP</h2>
         <div class="flex gap-2">
-            <button class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">Konfirmasi</button>
-            <button
-                class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
-                onclick="window.print()"
-            >PRINT</button>
+            <button type="button" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+                wire:click="confirmTransaction({{ $transaction->id }})">Konfirmasi</button>
+            <button class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+                onclick="window.print()">PRINT</button>
         </div>
         <a href="{{ route('dashboard') }}">
             <button class="w-full my-2 bg-red-600 text-white py-2 rounded-md hover:bg-red-700">BACK</button>
         </a>
     </div>
 </div>
-@endsection

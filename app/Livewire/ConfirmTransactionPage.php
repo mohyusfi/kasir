@@ -2,8 +2,12 @@
 
 namespace App\Livewire;
 
-use App\Models\Transaction;
+use Exception;
 use Livewire\Component;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\DB;
+use App\Services\TransactionService;
+use Livewire\Attributes\Layout;
 
 class ConfirmTransactionPage extends Component
 {
@@ -13,6 +17,19 @@ class ConfirmTransactionPage extends Component
     {
         $this->transactionId = $id;
     }
+
+    public function confirmTransaction(int $transaction_id, TransactionService $transactionService): void
+    {
+        try {
+            DB::beginTransaction();
+            $transactionService->confirmTransaction($transaction_id);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
+
+    #[Layout('layouts.transaction')]
     public function render()
     {
         $transaction = Transaction::find($this->transactionId);
