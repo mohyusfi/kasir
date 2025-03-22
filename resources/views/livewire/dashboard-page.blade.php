@@ -119,14 +119,23 @@
             </div>
 
             <!-- Payment Section -->
-            <div class="bg-white shadow-lg p-6 rounded-2xl">
+            <div class="bg-white shadow-lg p-6 rounded-2xl max-h-[17em]">
                 <h2 class="text-xl font-semibold mb-4">Konfirmasi Pembayaran</h2>
                 <div class="mb-4">
                     <p class="text-gray-600">Total Pembayaran</p>
                     <p class="text-2xl font-bold">Rp {{ $transactions?->totalPrice }}</p>
                 </div>
-                <button class="w-full bg-blue-500 text-white py-2 rounded-xl hover:bg-blue-600 transition">
-                    Bayar Sekarang
+                @if ($transactions?->id)
+                <a href="{{ route('confirm.transaction', ['id' => $transactions->id]) }}" wire:wire:navigate>
+                    <button class="w-full m-1 bg-blue-500 text-white py-2 rounded-xl hover:bg-blue-600 transition">
+                        Bayar Sekarang
+                    </button>
+                </a>
+                @endif
+                <button
+                    class="w-full m-1 bg-red-500 text-white py-2 rounded-xl hover:bg-red-700 transition {{ count($transaction_details ?? []) > 0 ? '' : 'hidden' }}"
+                    wire:click="cancelTransaction({{ $transactions?->id }})">
+                    Cancel
                 </button>
             </div>
         </div>

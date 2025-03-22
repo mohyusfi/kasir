@@ -8,6 +8,7 @@ use App\Services\TransactionService;
 use App\Utils\SearchProduct;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\Features\SupportPagination\WithoutUrlPagination;
 use Livewire\WithPagination;
@@ -52,6 +53,20 @@ class DashboardPage extends Component
             $this->addError('productQty', $e->getMessage());
         }
     }
+
+    public function cancelTransaction(int $transaction_id, TransactionService $transactionService): void
+    {
+        try {
+            DB::beginTransaction();
+            if ($transaction_id !== null) {
+                $transactionService->cancelTransaction($transaction_id);
+            }
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
+
     public function render()
     {
         $resultSearch = $this->searchProduct();

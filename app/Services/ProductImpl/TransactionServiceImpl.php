@@ -111,4 +111,20 @@ class TransactionServiceImpl implements TransactionService {
             ]);
     }
 
+    public function cancelTransaction(int $transaction_id): void
+    {
+        $transaction = Transaction::find($transaction_id);
+        if ($transaction !== null) {
+            $details = $transaction->details;
+            foreach ($details as $item) {
+                $productVariant = ProductVariant::find($item->variant_id);
+                $productVariant->update([
+                    'stock' => $productVariant->stock + $item->quantity
+                ]);
+            }
+            $transaction->update([
+                'status' => 'failed',
+            ]);
+        }
+    }
 }

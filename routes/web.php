@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\OnlyAdminMiddleware;
+use App\Livewire\ConfirmTransactionPage;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -16,6 +17,9 @@ Route::get('/dashboard', function () {
 Route::get('/products', function () {
     return view('product');
 })->middleware(['auth', OnlyAdminMiddleware::class])->name('products');
+
+Route::get('/confirm-transaction/{id}', ConfirmTransactionPage::class)
+        ->middleware(['auth'])->name('confirm.transaction');
 
 Route::get('/history-transaction', function () {
     return view('history-product');
