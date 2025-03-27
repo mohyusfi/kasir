@@ -52,6 +52,8 @@ class ProductsPage extends Component
 
             $result = $productService->create($this->productRequest);
 
+            $this->reset('productRequest');
+
             session()->flash("message", "success create " . $result->name);
             DB::commit();
         } catch (Exception|QueryException $exception) {
@@ -76,6 +78,8 @@ class ProductsPage extends Component
 
         $this->dispatch('$refresh');
 
+        $this->reset('productRequest');
+
         session()->flash("message", "success update ". $this->productRequest->name);
     }
 
@@ -90,7 +94,7 @@ class ProductsPage extends Component
         $this->productVariantRequest->productId = $productId;
         $this->validate([
             'productVariantRequest.productId' => ['required',
-                Rule::unique('product_variants', 'product_id')->where(function(Builder $query){
+                Rule::unique('product_variants', 'product_id')->where(function(Builder $query) use ($productId){
                     $query->where('size', strtolower(trim($this->productVariantRequest->size)))
                             ->where('color', strtolower(trim($this->productVariantRequest->color)))
                             ->where('price', $this->productVariantRequest->price);
@@ -146,7 +150,7 @@ class ProductsPage extends Component
     public function render()
     {
         return view('livewire.products-page', [
-            'products' => Product::select(['id', 'name', 'description', 'category_id'])
+            'products' => Product::select(['id', 'name', 'description', 'category_id', 'created_at'])
                                     ->with(['category', 'variants'])
                                     ->paginate(3)
         ]);

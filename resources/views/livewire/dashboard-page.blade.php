@@ -34,6 +34,7 @@
                         <div class="flex gap-2 items-center w-full justify-center">
                             <x-action-button
                                 wire:click='createTransaction({{ $variant->id }})'
+                                {{-- x-bind:disabled="{{ $variant->stock <= 0 }}" --}}
                                 btnType="">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                     class="size-10 text-blue-500 hover:text-blue-700 transition-all duration-[.2s]">

@@ -99,13 +99,18 @@ class TransactionServiceImpl implements TransactionService {
     {
         $transaction = Transaction::find($transaction_id);
         $variantProduct = ProductVariant::find($variant_id);
-        if ($transaction !== null)
-            if ($variantProduct->stock < $quantity) { throw new Exception("stock is not enough"); }
+        if ($transaction !== null && $transaction->details()->where('variant_id', $variantProduct->id)
+        ->first()->quantity !== $quantity)
+        {
+            $previousStock = $transaction->details()->where('variant_id', $variantProduct->id)
+                                    ->first()->quantity + $variantProduct->stock;
+
+            if ($previousStock < $quantity) { throw new Exception("stock is not enough"); }
 
             $sub_total = $variantProduct->price * $quantity;
             $previousStock = $transaction->details()
                 ->where('variant_id', $variant_id)
-                ->first()->quantity + $variantProduct->stock;
+                ->first()->quantity + $variantProduct->stock - $quantity;
 
             $transaction->details()->where('variant_id', $variant_id)->update([
                 'quantity' => $quantity,
@@ -120,6 +125,7 @@ class TransactionServiceImpl implements TransactionService {
             $transaction->update([
                 'totalPrice' => $totalPrice,
             ]);
+        }
     }
 
     public function cancelTransaction(int $transaction_id): void

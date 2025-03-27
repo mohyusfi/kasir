@@ -42,7 +42,7 @@ return new class extends Migration
             $table->unsignedBigInteger('totalPrice')->nullable(false)->default(0);
             $table->enum('status', ['pending', 'completed', 'failed'])
                         ->nullable(false)->default('pending');
-            $table->timestamp('created_at')->nullable(false)->useCurrent();
+            $table->timestamps();
             $table->foreign('cashier_id', 'fk_cashier_id')->references('id')->on('users');
         });
 
@@ -54,8 +54,8 @@ return new class extends Migration
             $table->decimal('sub_total', 10)->nullable(false)->default(0);
             $table->timestamps();
             $table->unique(['transaction_id', 'variant_id']);
-            $table->foreign('transaction_id')->references('id')->on('transactions');
-            $table->foreign('variant_id')->references('id')->on('product_variants');
+            $table->foreign('transaction_id')->references('id')->on('transactions')->cascadeOnDelete();
+            $table->foreign('variant_id')->references('id')->on('product_variants')->cascadeOnDelete();
         });
     }
 

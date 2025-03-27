@@ -20,8 +20,16 @@ class DashboardPage extends Component
     public ?int $productQty = null;
     public function createTransaction(int $variant_id, TransactionService $transactionService)
     {
-        $transactionService->makeTransaction(Auth::user()->id, $variant_id);
-        $this->dispatch('$refresh');
+        try {
+            DB::beginTransaction();
+            
+            $transactionService->makeTransaction(Auth::user()->id, $variant_id);
+            $this->dispatch('$refresh');
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
     }
 
     public function deleteOrderedItem(
@@ -30,7 +38,13 @@ class DashboardPage extends Component
         TransactionService $transactionService
     ): void
     {
-        $transactionService->deleteItem($transaction_id, $variant_id);
+        try {
+            DB::beginTransaction();
+            $transactionService->deleteItem($transaction_id, $variant_id);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
     }
 
     public function updateItemQty(
@@ -40,6 +54,7 @@ class DashboardPage extends Component
     ): void
     {
         try {
+            DB::beginTransaction();
             $this->validate([
                 'productQty' => ['required', 'integer', 'min:1']
             ]);
@@ -49,7 +64,9 @@ class DashboardPage extends Component
                 $variant_id,
                 $this->productQty
             );
+            DB::commit();
         } catch (Exception $e) {
+            DB::rollBack();
             $this->addError('productQty', $e->getMessage());
         }
     }

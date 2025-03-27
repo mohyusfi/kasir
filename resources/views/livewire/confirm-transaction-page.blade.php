@@ -43,7 +43,8 @@
             YUSFI SHOP</h2>
         <div class="flex gap-2">
             <button type="button" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
-                wire:click="confirmTransaction({{ $transaction->id }})">Konfirmasi</button>
+                wire:click="confirmTransaction({{ $transaction->id }})"
+                x-bind:disabled="{{ $transaction->status == 'completed' }}">Konfirmasi</button>
             @if ($transaction->status === "completed")
             <button class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
                 onclick="window.print()">PRINT</button>

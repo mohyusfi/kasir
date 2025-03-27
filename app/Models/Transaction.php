@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Transaction extends Model
 {
-    public $timestamps = false;
     public $fillable = [
         'cashier_id',
         'totalPrice',
@@ -18,5 +17,12 @@ class Transaction extends Model
     public function details(): HasMany
     {
         return $this->hasMany(TransactionDetail::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+        ];
     }
 }
