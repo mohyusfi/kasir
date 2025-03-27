@@ -1,6 +1,5 @@
 <div class="container mx-auto p-6 py-0 min-h-[100vh]" x-data="{ timezone : '' }"
-    x-init="timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    $wire.setTimezone(timezone);">
+    x-init="timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; $wire.setTimezone(timezone);">
     <h2 class="text-2xl font-semibold mb-4">Today</h2>
     <div class="space-y-4">
         @foreach ($transactionToday as $data)

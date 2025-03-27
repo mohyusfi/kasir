@@ -1,4 +1,4 @@
-<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 h-screen">
+<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 min-h-[100vh]">
     {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
     <x-input-search-product/>
     <x-table
