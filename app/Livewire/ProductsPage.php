@@ -83,9 +83,9 @@ class ProductsPage extends Component
         session()->flash("message", "success update ". $this->productRequest->name);
     }
 
-    public function deleteProduct(int $id_product, int $id_variant, ProductService $productService)
+    public function deleteProductVariant(int $id_product, int $id_variant, ProductService $productService)
     {
-        $productService->delete($id_product, $id_variant);
+        $productService->deleteProductVariant($id_product, $id_variant);
         $this->dispatch('refresh');
     }
 
@@ -152,7 +152,8 @@ class ProductsPage extends Component
         return view('livewire.products-page', [
             'products' => Product::select(['id', 'name', 'description', 'category_id', 'created_at'])
                                     ->with(['category', 'variants'])
-                                    ->paginate(3)
+                                    ->paginate(3),
+            'deletedVariant' => ProductVariant::select('id')->onlyTrashed()->get()->count(),
         ]);
     }
 }

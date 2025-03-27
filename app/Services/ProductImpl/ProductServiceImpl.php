@@ -92,18 +92,22 @@ class ProductServiceImpl implements ProductService {
         ]);
     }
 
-    public function delete(int $id_product, int $id_variant): void
+    public function deleteProductVariant(int $id_product, int $id_variant): void
     {
         $product = Product::find($id_product);
 
         if (!is_null($product)) {
             ProductVariant::find($id_variant)?->delete();
         }
+    }
 
-        $jmlVariant = $product->variants->count();
-
-        if ($jmlVariant < 1) {
-            $product->delete();
+    public function restoreProductVariant(int $id_variant): void
+    {
+        $variant = ProductVariant::select('id')
+                                    ->onlyTrashed()
+                                    ->where('id', $id_variant);
+        if ($variant !== null) {
+            $variant->restore();
         }
     }
 }

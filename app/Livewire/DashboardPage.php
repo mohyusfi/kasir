@@ -22,7 +22,7 @@ class DashboardPage extends Component
     {
         try {
             DB::beginTransaction();
-            
+
             $transactionService->makeTransaction(Auth::user()->id, $variant_id);
             $this->dispatch('$refresh');
 
@@ -89,6 +89,7 @@ class DashboardPage extends Component
         $resultSearch = $this->searchProduct();
         $products = !empty($this->inputSearchProduct) ? $resultSearch :
                     Product::select(['id', 'name', 'description', 'category_id'])
+                                ->whereHas('variants')
                                 ->with(['category', 'variants'])
                                 ->paginate(2);
         $transaction = Transaction::where("cashier_id", Auth::user()->id)

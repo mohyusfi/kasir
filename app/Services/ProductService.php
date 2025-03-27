@@ -12,5 +12,6 @@ interface ProductService {
     public function create(ProductRequest $product): Product;
     public function createVariant(ProductVariantRequest $productVariantRequest): ProductVariant;
     public function update(ProductRequest $product, int $id_variant): void;
-    public function delete(int $id, int $id_variant): void;
+    public function deleteProductVariant(int $id_product, int $id_variant): void;
+    public function restoreProductVariant(int $id_variant): void;
 }
