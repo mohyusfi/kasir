@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ProductImpl;
+namespace App\Services\ServiceImpl;
 
 use App\Livewire\Forms\ProductRequest;
 use App\Livewire\Forms\ProductVariantRequest;

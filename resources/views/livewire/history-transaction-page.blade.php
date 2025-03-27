@@ -36,6 +36,7 @@
             </div>
         </div>
         @endforeach
+        {{ $transactionToday->links(data: ['scrollTo' => false]) }}
     </div>
 
     <h2 class="text-2xl font-semibold mb-4 mt-7">List Transaction</h2>

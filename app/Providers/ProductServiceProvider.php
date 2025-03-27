@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\ProductImpl\ProductServiceImpl;
 use App\Services\ProductService;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
@@ -13,7 +12,7 @@ class ProductServiceProvider extends ServiceProvider implements DeferrableProvid
      * Register services.
      */
     public array $singletons = [
-        ProductService::class => ProductServiceImpl::class,
+        ProductService::class => \App\Services\ServiceImpl\ProductServiceImpl::class,
     ];
 
     public function register(): void

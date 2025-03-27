@@ -27,12 +27,12 @@ class HistoryTransactionPage extends Component
     {
         $transactions = Transaction::select(['id', 'totalPrice', 'status', 'created_at'])
                                         ->orderBy('created_at', 'desc')
-                                        ->paginate(5);
+                                        ->paginate(5, pageName: 'orderToday_page');
         $transactionToday = Transaction::select(['id', 'totalPrice', 'status', 'created_at'])
                             ->whereDate('created_at',
                             Carbon::today())
                             ->orderBy('created_at', 'desc')
-                            ->get();
+                            ->paginate(5, pageName: 'order_page');
         return view('livewire.history-transaction-page', [
             'transactionAll' => $transactions,
             'transactionToday' => $transactionToday

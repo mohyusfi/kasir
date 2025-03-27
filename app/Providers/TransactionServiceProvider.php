@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\ProductImpl\TransactionServiceImpl;
 use App\Services\TransactionService;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
@@ -13,7 +12,7 @@ class TransactionServiceProvider extends ServiceProvider implements DeferrablePr
      * Register services.
      */
     public array $singletons = [
-        TransactionService::class => TransactionServiceImpl::class,
+        TransactionService::class => \App\Services\ServiceImpl\TransactionServiceImpl::class,
     ];
     public function register(): void
     {

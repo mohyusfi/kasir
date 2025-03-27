@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ProductImpl;
+namespace App\Services\ServiceImpl;
 
 use App\Models\Product;
 use App\Models\Transaction;
@@ -105,12 +105,14 @@ class TransactionServiceImpl implements TransactionService {
             $previousStock = $transaction->details()->where('variant_id', $variantProduct->id)
                                     ->first()->quantity + $variantProduct->stock;
 
+            // dd($previousStock);
+
             if ($previousStock < $quantity) { throw new Exception("stock is not enough"); }
 
             $sub_total = $variantProduct->price * $quantity;
-            $previousStock = $transaction->details()
-                ->where('variant_id', $variant_id)
-                ->first()->quantity + $variantProduct->stock - $quantity;
+            // $previousStock = $transaction->details()
+            //     ->where('variant_id', $variant_id)
+            //     ->first()->quantity + $variantProduct->stock - $quantity;
 
             $transaction->details()->where('variant_id', $variant_id)->update([
                 'quantity' => $quantity,
