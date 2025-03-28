@@ -1,14 +1,14 @@
-# Cara Setup Project
+# Project Setup Guide
 
 ## 1. Clone Repository
-Jalankan perintah berikut untuk meng-clone repository:
+Run the following command to clone the repository:
 ```sh
-git clone https://sample.com
-cd nama-folder-repo
+git clone https://github.com/mohyusfi/kasir.git
+cd repository-folder-name
 ```
 
-## 2. Konfigurasi `.env`
-Salin file `.env.example` menjadi `.env` dan atur konfigurasi berikut:
+## 2. Configure `.env`
+Copy `.env.example` to `.env` and set up the following configuration:
 
 ### Database
 ```
@@ -21,28 +21,28 @@ DB_PASSWORD=your-pw
 ```
 
 ### Session Driver
-Ubah session driver menjadi database:
+Change the session driver to database:
 ```
 SESSION_DRIVER=database
 ```
 
-## 3. Install Dependensi
-Jalankan perintah berikut untuk menginstal dependensi:
+## 3. Install Dependencies
+Run the following command to install dependencies:
 ```sh
 npm install
 composer install
 ```
 
-## 4. Migrasi Database
-Jalankan perintah berikut untuk membuat tabel di database:
+## 4. Migrate Database
+Run the following command to create tables in the database:
 ```sh
 php artisan migrate
 ```
 
 ## 5. Generate Application Key
-Jalankan perintah berikut untuk menghasilkan application key:
+Run the following command to generate an application key:
 ```sh
 php artisan key:generate
 ```
 
-✅ **Project siap dijalankan!** 🚀
+✅ **Project is now ready to run!** 🚀
