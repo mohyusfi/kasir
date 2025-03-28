@@ -14,7 +14,7 @@
         <link rel="icon" type="image/ico" href="{{ asset('favicon_io/favicon.ico') }}">
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css'])
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
     </head>
     <body class="font-sans antialiased">

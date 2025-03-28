@@ -1,5 +1,5 @@
 <div>
-    <h2 class="mx-5 md:mx-0 font-bold text-black uppercase text-lg">Pulihkan variant🎯🎯</h2>
+    <h2 class="ms-4 md:mx-0 font-bold text-black mt-10 uppercase text-lg">Pulihkan variant🎯🎯</h2>
     <x-table :hasContent="($products->count() > 0)"
             :thead="['#', 'name', 'color', 'size', 'stock', 'price', 'pulihkan']">
         @php

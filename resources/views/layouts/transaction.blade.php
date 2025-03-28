@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Confirm Transaction</title>
     <link rel="icon" type="image/ico" href="{{ asset('favicon_io/favicon.ico') }}">
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/css/app.js'])
     <style>
         @media print {
             body * {

@@ -1,20 +1,21 @@
-<div class="container mx-auto p-6 py-0 min-h-[100vh]" x-data="{ timezone : '' }"
+<div class="container mx-auto p-6 py-0 min-h-[100vh] md:px-10" x-data="{ timezone : '' }"
     x-init="timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; $wire.setTimezone(timezone);">
-    <h2 class="text-2xl font-semibold mb-4">Today</h2>
-    {{-- @forelse ( as )
 
-    @empty
-
-    @endforelse --}}
+    <h2 class="text-2xl font-semibold mb-4 text-center">Today</h2>
     <div class="space-y-4">
+        @php
+            $index = 1;
+        @endphp
         @forelse ($transactionToday as $data)
         @php
             $statusColor = [
                 'completed' => 'bg-green-500 text-white',
                 'failed' => 'bg-red-500 text-white',
                 'pending' => 'bg-yellow-500 text-white'];
+            $delay = ($index++ - 1) * 300 - 100;
+            $animation = $index % 2 === 0 ? 'fade-right' : 'fade-left';
         @endphp
-        <div class="bg-white p-4 rounded-lg shadow-md border">
+        <div class="bg-white p-4 rounded-lg shadow-md border" data-aos="{{ $animation }}" data-aos-delay="{{ $delay }}">
             <div class="flex justify-between">
                 <span class="text-gray-700 font-semibold">ID: {{ $data->id }}</span>
                 <span class="text-gray-500 text-sm">
@@ -48,8 +49,7 @@
         @endforelse
     </div>
 
-    <h2 class="text-2xl font-semibold mb-4 mt-7">List Transaction</h2>
-
+    <h2 class="text-2xl font-semibold mb-4 mt-7 text-center">List Transaction</h2>
     <div class="space-y-4">
         @foreach ($transactionAll as $data)
         @php
@@ -58,7 +58,7 @@
                 'failed' => 'bg-red-500 text-white',
                 'pending' => 'bg-yellow-500 text-white'];
         @endphp
-        <div class="bg-white p-4 rounded-lg shadow-md border">
+        <div class="bg-white p-4 rounded-lg shadow-md border" data-aos="fade-up">
             <div class="flex justify-between">
                 <span class="text-gray-700 font-semibold">ID: {{ $data->id }}</span>
                 <span class="text-gray-500 text-sm">

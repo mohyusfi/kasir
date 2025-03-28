@@ -167,7 +167,7 @@
                     'name' => [
                         'type' => 'text',
                         'directive' => 'productRequest.name',
-                        'placeholder' => 'Lux'
+                        'placeholder' => 'Jayrose Gray'
                     ],
                     'stock' => [
                         'type' => 'number',
@@ -177,7 +177,7 @@
                     'price' => [
                         'type' => 'text',
                         'directive' => 'productRequest.price',
-                        'placeholder' => '200000'
+                        'placeholder' => '100,000.00'
                     ],
                     'color' => [
                         'type' => 'text',
@@ -187,7 +187,7 @@
                     'description' => [
                         'type' => 'textarea',
                         'directive' => 'productRequest.description',
-                        'placeholder' => 'Lux Adalah sabun mandi'
+                        'placeholder' => 'Jayrose Gray Adalah prefume'
                     ],
                     'size' => [
                         'type' => 'text',
@@ -203,7 +203,8 @@
 
         @if ($showEdit)
         <x-daisy-modal
-            btnType="btn btn-sm btn-success md:btn-sm"
+            title="update product"
+            btnType="btn btn-sm btn-success md:btn-sm mt-4 md:mt-0"
             key="2">
             <x-slot:btnName>
                 update_{{ $productRequest->name }}
