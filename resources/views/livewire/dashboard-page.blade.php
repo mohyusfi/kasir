@@ -125,7 +125,7 @@
                 <h2 class="text-xl font-semibold mb-4">Konfirmasi Pembayaran</h2>
                 <div class="mb-4">
                     <p class="text-gray-600">Total Pembayaran</p>
-                    <p class="text-2xl font-bold">Rp {{ $transactions?->totalPrice }}</p>
+                    <p class="text-2xl font-bold">Rp {{ number_format($transactions?->totalPrice) }}</p>
                 </div>
                 @if ($transactions?->id)
                 <a href="{{ route('confirm.transaction', ['id' => $transactions->id]) }}" wire:wire:navigate>

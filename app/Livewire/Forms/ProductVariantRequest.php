@@ -7,9 +7,9 @@ use Livewire\Form;
 
 class ProductVariantRequest extends Form
 {
-    public int $productId;
+    public ?int $productId = null;
     public ?string $color = null;
     public ?string $size = null;
-    public string $price = '';
+    public ?string $price = null;
     public int $stock = 0;
 }

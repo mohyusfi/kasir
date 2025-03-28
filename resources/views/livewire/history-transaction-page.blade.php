@@ -1,8 +1,13 @@
 <div class="container mx-auto p-6 py-0 min-h-[100vh]" x-data="{ timezone : '' }"
     x-init="timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; $wire.setTimezone(timezone);">
     <h2 class="text-2xl font-semibold mb-4">Today</h2>
+    {{-- @forelse ( as )
+
+    @empty
+
+    @endforelse --}}
     <div class="space-y-4">
-        @foreach ($transactionToday as $data)
+        @forelse ($transactionToday as $data)
         @php
             $statusColor = [
                 'completed' => 'bg-green-500 text-white',
@@ -19,7 +24,7 @@
             <div class="flex justify-between">
                 <div class="mt-2 text-gray-600">
                     <span>Total Harga: </span>
-                    <span class="font-bold">Rp {{ $data->totalPrice }}</span>
+                    <span class="font-bold">Rp {{ number_format($data->totalPrice) }}</span>
                 </div>
                 <div class="mt-2">
                     <span class="px-3 py-1 rounded-md {{ $statusColor[$data->status] }}">
@@ -34,8 +39,13 @@
                 </a>
             </div>
         </div>
-        @endforeach
         {{ $transactionToday->links(data: ['scrollTo' => false]) }}
+
+        @empty
+        <div>
+            <h3 class="uppercase text-center">no Transaction Today</h3>
+        </div>
+        @endforelse
     </div>
 
     <h2 class="text-2xl font-semibold mb-4 mt-7">List Transaction</h2>
@@ -58,7 +68,7 @@
             <div class="flex justify-between">
                 <div class="mt-2 text-gray-600">
                     <span>Total Harga: </span>
-                    <span class="font-bold">Rp {{ $data->totalPrice }}</span>
+                    <span class="font-bold">Rp {{ number_format($data->totalPrice) }}</span>
                 </div>
                 <div class="mt-2">
                     <span class="px-3 py-1 rounded-md {{ $statusColor[$data->status] }}">

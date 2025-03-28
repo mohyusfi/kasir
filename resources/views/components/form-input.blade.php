@@ -49,6 +49,7 @@
                         :hidden="$value['hidden'] ?? false"
                         wire:model="{{ $value['directive'] }}"
                      />
+                     {{-- <input type="{{ $value['type'] }}" placeholder="{{ $value['placeholder'] }}"> --}}
                 @endif
             </div>
         @endforeach

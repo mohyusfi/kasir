@@ -155,7 +155,7 @@
 
     <div class="flex {{ $showEdit !== null ? 'justify-evenly md:justify-normal gap-2' : 'justify-evenly' }}">
         <x-daisy-modal
-            btnType="btn btn-sm md:btn-sm"
+            btnType="btn btn-sm md:btn-sm mt-4 md:mt-0"
             key="1">
             <x-slot:btnName>
                 create new product

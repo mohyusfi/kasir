@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Rules\CurrencyFormat;
 use Exception;
 use App\Models\Product;
 use Livewire\Component;
@@ -44,15 +45,25 @@ class ProductsPage extends Component
                 'productRequest.name' => ['required', 'string', 'min:3', 'max:100'],
                 'productRequest.description' => ['nullable', 'string'],
                 'productRequest.quantity' => ['required', 'integer'],
-                'productRequest.price' => ['required', 'decimal:2'],
+                'productRequest.price' => ['required', new CurrencyFormat],
                 'productRequest.category' => ['required', 'string'],
                 'productRequest.color' => ['nullable', 'string'],
                 'productRequest.size' => ['nullable', 'string'],
             ]);
 
+            $this->productRequest->price = str_replace(',', '', $this->productRequest->price);
+
             $result = $productService->create($this->productRequest);
 
-            $this->reset('productRequest');
+            $this->reset([
+                'productRequest.name',
+                'productRequest.description',
+                'productRequest.quantity',
+                'productRequest.price',
+                'productRequest.category',
+                'productRequest.color',
+                'productRequest.size',
+            ]);
 
             session()->flash("message", "success create " . $result->name);
             DB::commit();
@@ -75,10 +86,6 @@ class ProductsPage extends Component
         ]);
 
         $productService->update($this->productRequest, $this->showEdit);
-
-        $this->dispatch('$refresh');
-
-        $this->reset('productRequest');
 
         session()->flash("message", "success update ". $this->productRequest->name);
     }
