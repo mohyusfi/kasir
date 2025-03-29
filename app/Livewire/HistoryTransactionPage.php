@@ -20,7 +20,6 @@ class HistoryTransactionPage extends Component
     {
         $this->timezone = $data;
         session(['user_timezone' => $data]); // Simpan sementara di session
-        // dd(session('user_timezone', 'UTC'));
     }
 
     public function render()
@@ -29,8 +28,7 @@ class HistoryTransactionPage extends Component
                                         ->orderBy('created_at', 'desc')
                                         ->paginate(5, pageName: 'orderToday_page');
         $transactionToday = Transaction::select(['id', 'totalPrice', 'status', 'created_at'])
-                            ->whereDate('created_at',
-                            Carbon::today())
+                            ->whereDate('created_at', Carbon::today())
                             ->orderBy('created_at', 'desc')
                             ->paginate(5, pageName: 'order_page');
         return view('livewire.history-transaction-page', [

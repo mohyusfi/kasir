@@ -10,9 +10,17 @@ trait SearchProduct {
 
     public function searchProduct(): LengthAwarePaginator
     {
-        return Product::select(['id', 'name', 'description', 'category_id'])
-                            ->where('name', 'LIKE', '%' . $this->inputSearchProduct . '%')
-                            ->with(['category', 'variants'])
-                            ->paginate(3);
+        if (Product::$categoryId === null) {
+            return Product::select(['id', 'name', 'description', 'category_id'])
+                                ->where('name', 'LIKE', '%' . $this->inputSearchProduct . '%')
+                                ->with(['category', 'variants'])
+                                ->paginate(3);
+        } else {
+            return Product::select(['id', 'name', 'description', 'category_id'])
+                                ->filterByCategory()
+                                ->where('name', 'LIKE', '%' . $this->inputSearchProduct . '%')
+                                ->with(['category', 'variants'])
+                                ->paginate(3);
+        }
     }
 }

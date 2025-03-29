@@ -1,6 +1,12 @@
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 min-h-[100vh]">
     {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
-    <x-input-search-product/>
+    <div class="flex gap-2 justify-around md:justify-between px-2">
+        <x-input-search-product/>
+        <x-select-options
+            :categories="$productCategory"
+            property="selectedCategory"
+            :selected="$selectedCategory"/>
+    </div>
     <x-table
         :thead="['#', 'name', 'description', 'category', 'stock', 'size', 'color', 'price', 'added_at', 'order']"
         :hasContent="count($products) > 0 ? true : false">

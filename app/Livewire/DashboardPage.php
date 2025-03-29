@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Services\TransactionService;
@@ -18,6 +19,12 @@ class DashboardPage extends Component
     use SearchProduct, WithPagination, WithoutUrlPagination;
 
     public ?int $productQty = null;
+    public int|string|null $selectedCategory = null;
+    public array $productCategory = [];
+    public function mount(): void
+    {
+        $this->productCategory = Category::select(['id', 'name'])->get()->toArray();
+    }
     public function createTransaction(int $variant_id, TransactionService $transactionService)
     {
         try {
@@ -84,14 +91,31 @@ class DashboardPage extends Component
         }
     }
 
-    public function render()
+    public function getProducts()
     {
-        $resultSearch = $this->searchProduct();
-        $products = !empty($this->inputSearchProduct) ? $resultSearch :
-                    Product::select(['id', 'name', 'description', 'category_id'])
+        $product = [];
+
+        if (empty($this->selectedCategory)) {
+            $product = Product::select(['id', 'name', 'description', 'category_id'])
                                 ->whereHas('variants')
                                 ->with(['category', 'variants'])
                                 ->paginate(2);
+        } else {
+            $product = Product::select(['id', 'name', 'description', 'category_id'])
+                                ->filterByCategory()
+                                ->whereHas('variants')
+                                ->with(['category', 'variants'])
+                                ->paginate(2);
+        }
+
+        return $product;
+    }
+
+    public function render()
+    {
+        Product::$categoryId = $this->selectedCategory;
+        $resultSearch = $this->searchProduct();
+        $products = !empty($this->inputSearchProduct) ? $resultSearch : $this->getProducts();
         $transaction = Transaction::where("cashier_id", Auth::user()->id)
                                         ->where("status", "pending")->first();
         $transaction_details = $transaction?->details;
