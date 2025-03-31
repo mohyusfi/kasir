@@ -25,7 +25,7 @@
             <div class="flex justify-between">
                 <div class="mt-2 text-gray-600">
                     <span>Total Harga: </span>
-                    <span class="font-bold">Rp {{ number_format($data->totalPrice) }}</span>
+                    <span class="font-bold">Rp {{ number_format($data->totalPrice, 2) }}</span>
                 </div>
                 <div class="mt-2">
                     <span class="px-3 py-1 rounded-md {{ $statusColor[$data->status] }}">
@@ -40,13 +40,12 @@
                 </a>
             </div>
         </div>
-        {{ $transactionToday->links(data: ['scrollTo' => false]) }}
-
         @empty
         <div>
             <h3 class="uppercase text-center">no Transaction Today</h3>
         </div>
         @endforelse
+        {{ $transactionToday->links(data: ['scrollTo' => false]) }}
     </div>
 
     <h2 class="text-2xl font-semibold mb-4 mt-7 text-center">List Transaction</h2>
@@ -68,7 +67,7 @@
             <div class="flex justify-between">
                 <div class="mt-2 text-gray-600">
                     <span>Total Harga: </span>
-                    <span class="font-bold">Rp {{ number_format($data->totalPrice) }}</span>
+                    <span class="font-bold">Rp {{ number_format($data->totalPrice, 2) }}</span>
                 </div>
                 <div class="mt-2">
                     <span class="px-3 py-1 rounded-md {{ $statusColor[$data->status] }}">

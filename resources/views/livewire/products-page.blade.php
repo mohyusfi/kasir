@@ -26,7 +26,7 @@
                     <td>{{ $variant->stock }}</td>
                     <td>{{ $variant->size }}</td>
                     <td>{{ $variant->color }}</td>
-                    <td class="text-nowrap">Rp. {{ number_format($variant->price, 0) }}</td>
+                    <td class="text-nowrap">Rp. {{ number_format($variant->price, 2) }}</td>
                     <td class="text-nowrap">{{ $variant->created_at->diffForHumans() }}</td>
                     <td>
                         <div class="flex gap-2 items-center">

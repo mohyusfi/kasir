@@ -14,7 +14,7 @@
                 <div class="block text-gray-600 mt-2">
                     <div class="w-full flex justify-between">
                         <span>{{ $item->productVariant->product->name  }}</span>
-                        <span class="text-[12px]">Rp. {{ number_format($item->productVariant->price) }}</span>
+                        <span class="text-[12px]">Rp. {{ number_format($item->productVariant->price, 2) }}</span>
                     </div>
                     <div class="w-full flex justify-between items-center">
                         <div class="text-[12px] text-gray-400">
@@ -27,7 +27,7 @@
             @endforeach
             <div class="flex justify-between text-gray-600 mt-2">
                 <span>Total Price:</span>
-                <span class="font-medium text-green-600">Rp {{ number_format($transaction->totalPrice) }}</span>
+                <span class="font-medium text-green-600">Rp {{ number_format($transaction->totalPrice, 2) }}</span>
             </div>
             <div class="flex justify-between text-gray-600 mt-2">
                 <span>Date:</span>
