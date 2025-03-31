@@ -66,7 +66,7 @@
                 <h2 class="text-xl font-semibold mb-4">Produk yang Dipesan</h2>
                 <div class="space-y-4">
                     @foreach ($transaction_details ?? [] as $item)
-                    <div class="flex items-center border-b pb-4" x-data="{ hidden: false }">
+                    <div class="flex items-center border-b pb-4" x-data="{ hidden: false, success: true }">
                         <div class="flex items-center justify-center gap-2">
                             <button
                                 wire:click="deleteOrderedItem({{ $item->transaction_id }}, {{ $item->variant_id }})">
@@ -96,11 +96,10 @@
                             </p>
                             <p
                                 class="text-gray-500 text-sm"
-                                x-show="hidden == false">Rp {{ number_format($item->sub_total) }}</p>
+                                x-show="hidden == false">Rp {{ number_format($item->sub_total, 2) }}</p>
                         </div>
                         <p class="font-semibold" x-show="hidden == false">x{{ $item->quantity }}</p>
                         <form
-                            wire:submit.prevent="updateItemQty({{ $item->transaction_id }}, {{ $item->variant_id }})"
                             class="flex gap-2 items-center" x-show="hidden == true">
                             <div>
                                 @error('productQty')
@@ -115,7 +114,12 @@
                                     wire:model="productQty"
                                     class="w-[5em]"/>
                             </div>
-                            <button type="submit">
+                            <button type="button" x-on:click="
+                                const isSuccess = $wire.updateItemQty({{ $item->transaction_id }}, {{ $item->variant_id }});
+                                isSuccess.then(data => {
+                                    if(data === true) hidden = false;
+                                });
+                            ">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 text-blue-500 hover:text-blue-700">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                   </svg>
@@ -131,7 +135,7 @@
                 <h2 class="text-xl font-semibold mb-4">Konfirmasi Pembayaran</h2>
                 <div class="mb-4">
                     <p class="text-gray-600">Total Pembayaran</p>
-                    <p class="text-2xl font-bold">Rp {{ number_format($transactions?->totalPrice) }}</p>
+                    <p class="text-2xl font-bold text-gray-900">Rp {{ number_format($transactions?->totalPrice, 2) }}</p>
                 </div>
                 @if ($transactions?->id)
                 <a href="{{ route('confirm.transaction', ['id' => $transactions->id]) }}" wire:wire:navigate>

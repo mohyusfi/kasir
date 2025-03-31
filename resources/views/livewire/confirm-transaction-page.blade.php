@@ -46,7 +46,7 @@
                 type="button"
                 class="w-full  text-white py-2 rounded-md {{ $transaction->status == 'completed' ? 'bg-blue-300 hover:bg-blue-300' : 'bg-blue-600 hover:bg-blue-700' }}"
                 wire:click="confirmTransaction({{ $transaction->id }})"
-                x-bind:disabled="{{ $transaction->status == 'completed' }}">Konfirmasi</button>
+                @disabled($transaction->status == 'completed')>Konfirmasi</button>
             @if ($transaction->status === "completed")
             <button class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
                 onclick="window.print()">PRINT</button>

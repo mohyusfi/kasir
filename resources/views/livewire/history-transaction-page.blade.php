@@ -25,7 +25,7 @@
             <div class="flex justify-between">
                 <div class="mt-2 text-gray-600">
                     <span>Total Harga: </span>
-                    <span class="font-bold">Rp {{ number_format($data->totalPrice, 2) }}</span>
+                    <span class="font-bold text-sm">Rp {{ number_format($data->totalPrice, 2) }}</span>
                 </div>
                 <div class="mt-2">
                     <span class="px-3 py-1 rounded-md {{ $statusColor[$data->status] }}">
@@ -67,7 +67,7 @@
             <div class="flex justify-between">
                 <div class="mt-2 text-gray-600">
                     <span>Total Harga: </span>
-                    <span class="font-bold">Rp {{ number_format($data->totalPrice, 2) }}</span>
+                    <span class="font-bold text-sm">Rp {{ number_format($data->totalPrice, 2) }}</span>
                 </div>
                 <div class="mt-2">
                     <span class="px-3 py-1 rounded-md {{ $statusColor[$data->status] }}">

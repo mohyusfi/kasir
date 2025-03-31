@@ -21,6 +21,7 @@ class DashboardPage extends Component
     public ?int $productQty = null;
     public int|string|null $selectedCategory = null;
     public array $productCategory = [];
+    // public bool $hideEdtQty = false;
     public function mount(): void
     {
         $this->productCategory = Category::select(['id', 'name'])->get()->toArray();
@@ -58,7 +59,7 @@ class DashboardPage extends Component
         int $transaction_id,
         int $variant_id,
         TransactionService $transactionService
-    ): void
+    ): bool
     {
         try {
             DB::beginTransaction();
@@ -71,10 +72,13 @@ class DashboardPage extends Component
                 $variant_id,
                 $this->productQty
             );
+            $this->reset('productQty');
             DB::commit();
+            return true;
         } catch (Exception $e) {
             DB::rollBack();
             $this->addError('productQty', $e->getMessage());
+            return false;
         }
     }
 

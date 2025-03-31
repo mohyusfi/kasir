@@ -46,6 +46,12 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        @can('onlyAdmin', auth()->user())
+                        <x-dropdown-link :href="route('register')">
+                            {{ __('Register') }}
+                        </x-dropdown-link>
+                        @endcan
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
