@@ -29,10 +29,7 @@
         <div class="mt-5 border-4 border-indigo-400 w-[300px] lg:w-[520px] bg-indigo-50 px-5" style="border-radius:30px; font-family:arial;">
             <h3 class="mt-8 ml-2 text-2xl">Please login to access this page</h3>
             <h4 class="mt-1 ml-2">Don't have an account? Please register to create an account</h4>
-            <div class="text-sm mb-6 not-has-[nav]:hidden justify-center">
-            <div class="mt-3 flex items-center gap-4">
-                    @auth
-                        @if (Route::has('login'))
+            <div class="text-sm mb-6 not-has-[nav]:hidden justify-center mt-8 flex items-center gap-4">
                         <a
                             href="{{ route('login') }}"
                             class=" bg-cyan-700 inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18]  rounded-full text-sm leading-normal hover:bg-sky-400"
@@ -47,9 +44,6 @@
                                 Register
                             </a>
                         @endif
-                    @endauth
-                </div>
-            @endif
         </div>
         </div>
         </div>
