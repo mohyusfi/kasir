@@ -18,10 +18,10 @@ class DashboardPage extends Component
 {
     use SearchProduct, WithPagination, WithoutUrlPagination;
 
-    public ?int $productQty = null;
+    public null|int|string $productQty = null;
     public int|string|null $selectedCategory = null;
     public array $productCategory = [];
-    // public bool $hideEdtQty = false;
+
     public function mount(): void
     {
         $this->productCategory = Category::select(['id', 'name'])->get()->toArray();
@@ -114,7 +114,6 @@ class DashboardPage extends Component
 
         return $product;
     }
-
     public function render()
     {
         Product::$categoryId = $this->selectedCategory;

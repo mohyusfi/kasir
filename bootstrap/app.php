@@ -23,4 +23,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 'message' => $e->getMessage(),
             ]);
         });
+
+        $exceptions->render(function(Exception $e, $request)  {
+            return response()->view('components.errors.index', [
+                'statusCode' => $e->getCode() === 0 ? 500 : $e->getCode(),
+                'message' => $e->getMessage(),
+            ]);
+        });
     })->create();
