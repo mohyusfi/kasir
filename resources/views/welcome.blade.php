@@ -44,15 +44,16 @@
                                 Register
                             </a>
                         @endif
+
         </div>
         </div>
         </div>
-        
+
         <div class="flex justify-center items-center">
     <x-application-logo class="block h-[300px] w-auto fill-current text-gray-800" />
 </div>
         </section>
-        
+
         @if (Route::has('login'))
             <div class="h-14.5 hidden lg:block"></div>
         @endif

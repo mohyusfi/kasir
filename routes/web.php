@@ -2,13 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\OnlyAdminMiddleware;
+use App\Http\Middleware\OnlyGuestMiddleware;
 use App\Livewire\ConfirmTransactionPage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware([OnlyGuestMiddleware::class]);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

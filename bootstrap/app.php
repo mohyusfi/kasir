@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\OnlyGuestMiddleware;
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\OnlyAdminMiddleware;
 use Illuminate\Database\QueryException;
@@ -14,7 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // $middleware->append(OnlyAdminMiddleware::class);
+        $middleware->alias([
+            'OnlyGuest' => OnlyGuestMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (HttpException $e, $request) {
