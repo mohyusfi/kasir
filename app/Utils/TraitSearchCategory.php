@@ -8,7 +8,7 @@ trait TraitSearchCategory {
     public string $search;
     public ?array $result = null;
     public array $myAttribute;
-    public string $keyInput = '';
+    // public string $keyInput = '';
 
     public function updatedSearch(string $value): void
     {

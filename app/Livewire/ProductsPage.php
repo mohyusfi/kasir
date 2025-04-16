@@ -37,21 +37,26 @@ class ProductsPage extends Component
                                 ->paginate(5);
     }
 
+    public function updatedProductRequestPrice($value): void
+    {
+        $this->productRequest->price = number_format((float)$value);
+    }
+
     public function createProduct(ProductService $productService)
     {
+        $this->productRequest->price = str_replace(',', '', $this->productRequest->price);
         try {
             DB::beginTransaction();
             $this->validate([
                 'productRequest.name' => ['required', 'string', 'min:3', 'max:100'],
                 'productRequest.description' => ['nullable', 'string'],
                 'productRequest.quantity' => ['required', 'integer'],
-                'productRequest.price' => ['required', new CurrencyFormat],
+                'productRequest.price' => ['required', 'numeric'],
                 'productRequest.category' => ['required', 'string'],
                 'productRequest.color' => ['nullable', 'string'],
                 'productRequest.size' => ['nullable', 'string'],
             ]);
 
-            $this->productRequest->price = str_replace(',', '', $this->productRequest->price);
 
             $result = $productService->create($this->productRequest);
 

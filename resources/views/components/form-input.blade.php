@@ -47,7 +47,7 @@
                         :placeholder="$value['placeholder']"
                         :type="$value['type']"
                         :hidden="$value['hidden'] ?? false"
-                        wire:model="{{ $value['directive'] }}"
+                        wire:model.live.debounce.1000ms="{{ $value['directive'] }}"
                      />
                      {{-- <input type="{{ $value['type'] }}" placeholder="{{ $value['placeholder'] }}"> --}}
                 @endif
