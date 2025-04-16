@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 Route::get('/', function () {
     return view('welcome');
-})->middleware([OnlyGuestMiddleware::class]);
+})->middleware(["OnlyGuest"]);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
