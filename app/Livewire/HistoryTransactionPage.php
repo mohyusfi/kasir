@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Product;
 use App\Models\Transaction;
 use Carbon\Carbon;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Features\SupportPagination\WithoutUrlPagination;
@@ -22,6 +23,8 @@ class HistoryTransactionPage extends Component
         session(['user_timezone' => $data]); // Simpan sementara di session
     }
 
+
+    // #[Layout('layouts.transaction')]
     public function render()
     {
         $transactions = Transaction::select(['id', 'totalPrice', 'status', 'created_at'])

@@ -1,5 +1,12 @@
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 min-h-[100vh]">
     {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
+
+<x-slot name="header">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ __('Orders') }}
+    </h2>
+</x-slot>
+<div class="py-10">
     <div class="flex gap-2 justify-around md:justify-between px-2">
         <x-input-search-product/>
         <x-select-options
@@ -152,4 +159,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

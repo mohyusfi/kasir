@@ -1,4 +1,4 @@
-@props(['thead', 'hasContent' => false])
+@props(['thead', 'hasContent' => false, 'whenEmpty' => 'NO Product'])
 
 <div class="overflow-x-auto">
     <table class="table">
@@ -16,7 +16,7 @@
             @else
                 <tr class="border-none">
                     <td colspan="{{ count($thead) }}">
-                        <h1 class="text-center text-xl">No Product</h1>
+                        <h1 class="text-center text-xl">{{ $whenEmpty }}</h1>
                     </td>
                 </tr>
             @endif

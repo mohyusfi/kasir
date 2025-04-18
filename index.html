@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aku suka dia</title>
+</head>
+<body>
+
+
+
+    <script>
+        const person = {
+            name: "yusfi",
+            age: 12,
+            getName: function() {
+                console.log(`name: ${this.name}`);
+            }
+        }
+
+        function sayHello(name) {
+            console.log(`Hello ${name}`);
+        }
+
+        function Person2()
+        {
+
+        }
+
+        console.log(Object.getOwnPropertyNames(Person2));
+        console.log(sayHello instanceof Function);
+        console.log(new Person2());
+    </script>
+</body>
+</html>
