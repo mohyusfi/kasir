@@ -1,5 +1,13 @@
 <div class="container mx-auto p-6 py-0 min-h-[100vh] md:px-10" x-data="{ timezone : '' }"
-    x-init="timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; $wire.setTimezone(timezone);">
+x-init="timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; $wire.setTimezone(timezone);">
+
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800  leading-tight">
+            {{ __('History Transaction') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-10">
 
     <h2 class="text-2xl font-semibold mb-4 text-center">Today</h2>
     <div class="space-y-4">
@@ -84,6 +92,7 @@
         </div>
         @endforeach
         {{ $transactionAll->links(data: ['scrollTo' => false]) }}
+    </div>
     </div>
 </div>
 
