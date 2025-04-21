@@ -23,12 +23,12 @@
                     @endcan
 
                     @can('onlyAdmin', auth()->user())
-                        <x-nav-link :href="route('charts')" :active="request()->routeIs('charts')">
+                        <x-nav-link :href="route('charts')" wire:navigate :active="request()->routeIs('charts')">
                             {{ __('Chart Penjualan') }}
                         </x-nav-link>
                     @endcan
 
-                    <x-nav-link :href="route('history.transaction')" :active="request()->routeIs('history.transaction')">
+                    <x-nav-link :href="route('history.transaction')" wire:navigate :active="request()->routeIs('history.transaction')">
                         {{ __('History Transaction') }}
                     </x-nav-link>
                 </div>
