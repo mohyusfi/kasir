@@ -45,6 +45,7 @@ class ProductServiceImpl implements ProductService {
             'color' => $product->color,
             'size' => $product->size,
             'price' => $product->price,
+            'purchasePrice' => $product->purchasePrice,
             'stock' => $product->quantity,
         ]);
 
@@ -58,6 +59,7 @@ class ProductServiceImpl implements ProductService {
             'stock' => $productVariantRequest->stock,
             'size' => $productVariantRequest->size,
             'color' => $productVariantRequest->color,
+            'purchasePrice' => $productVariantRequest->purchasePrice,
             'price' => $productVariantRequest->price,
         ]);
     }
@@ -88,6 +90,7 @@ class ProductServiceImpl implements ProductService {
             "color" => $product->color,
             "size" => $product->size,
             "price" => $product->price,
+            'purchasePrice' => $product->purchasePrice,
             "stock" => $product->quantity,
         ]);
     }

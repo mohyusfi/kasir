@@ -23,7 +23,7 @@
 
     <form wire:submit.prevent='{{ $method }}'
         x-on:submit="loading = true"
-        x-init="$watch('loading', value => { if (value) setTimeout(() => loading = false, 1000) })"
+        x-init="$watch('loading', value => { if (value) setTimeout(() => loading = false, 1500) })"
         {{ $attributes->merge() }} >
         @foreach ($fields as $key => $value)
             <div class="mb-4" wire:key='{{ $key }}'>

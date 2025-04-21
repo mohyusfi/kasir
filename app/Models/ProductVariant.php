@@ -16,6 +16,7 @@ class ProductVariant extends Model
         'product_id',
         'color',
         'size',
+        'purchasePrice',
         'price',
         'stock',
     ];
@@ -27,6 +28,6 @@ class ProductVariant extends Model
 
     public function transactionDetails(): HasMany
     {
-        return $this->hasMany(TransactionDetail::class);
+        return $this->hasMany(TransactionDetail::class, 'transaction_id', 'id');
     }
 }

@@ -1,12 +1,12 @@
-@props(['thead', 'hasContent' => false, 'whenEmpty' => 'NO Product'])
+@props(['thead', 'hasContent' => false, 'whenEmpty' => 'NO Product', 'center' => ''])
 
 <div class="overflow-x-auto">
-    <table class="table">
+    <table class="table border-b-2 border-gray-500">
         <!-- head -->
         <thead>
             <tr>
                 @foreach ($thead as $item)
-                    <th class="font-semibold text-gray-900" wire:key="{{ $item }}">{{ $item }}</th>
+                    <th class="font-semibold {{ $center ?? ''}} text-gray-900" wire:key="{{ $item }}">{{ $item }}</th>
                 @endforeach
             </tr>
         </thead>

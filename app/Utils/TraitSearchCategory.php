@@ -8,7 +8,6 @@ trait TraitSearchCategory {
     public string $search;
     public ?array $result = null;
     public array $myAttribute;
-    // public string $keyInput = '';
 
     public function updatedSearch(string $value): void
     {
@@ -25,8 +24,13 @@ trait TraitSearchCategory {
     public function sendValue(string $name): void
     {
         $this->search = $name;
-        $this->keyInput = uniqid();
         $this->result = [];
         $this->productRequest->category = $name;
+    }
+
+    public function resetCategory(): void
+    {
+        $this->result = [];
+        $this->search = '';
     }
 }

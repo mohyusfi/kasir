@@ -9,12 +9,17 @@ use App\Livewire\DashboardPage;
 use App\Livewire\HistoryTransactionPage;
 use App\Livewire\HomePage;
 use App\Livewire\ProductsPage;
+use App\Livewire\SalesDetailsPage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 Route::get('/', HomePage::class)
         ->middleware(["OnlyGuest"]);
+
+Route::get('/sales-details/{month}', SalesDetailsPage::class)
+    ->middleware(['auth', OnlyAdminMiddleware::class])
+        ->name('SalesDetails');
 
 Route::get('/dashboard', DashboardPage::class)
         ->middleware(['auth', 'verified'])
