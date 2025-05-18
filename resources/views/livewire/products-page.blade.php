@@ -1,6 +1,13 @@
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-gray-100">
-    <x-table
-        :thead="['#', 'name', 'description', 'category', 'stock', 'size', 'color', 'price', 'added_at', 'action']"
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800  leading-tight">
+            {{ __('Products') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-10">
+        <x-table
+        :thead="['#', 'name', 'description', 'category', 'stock', 'size', 'color', 'harga beli', 'harga jual', 'added_at', 'action']"
         :hasContent="count($products) > 0 ? true : false">
         @php
             $row = 1;
@@ -26,6 +33,7 @@
                     <td>{{ $variant->stock }}</td>
                     <td>{{ $variant->size }}</td>
                     <td>{{ $variant->color }}</td>
+                    <td class="text-nowrap">Rp. {{ number_format($variant->purchasePrice, 2) }}</td>
                     <td class="text-nowrap">Rp. {{ number_format($variant->price, 2) }}</td>
                     <td class="text-nowrap">{{ $variant->created_at->diffForHumans() }}</td>
                     <td>
@@ -38,6 +46,7 @@
                                     <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
                                   </svg>
                             </x-action-button>
+
                             <x-action-button
                                 btnType=""
                                 wire:click="deleteProductVariant({{ $product->id }}, {{ $variant->id }})"
@@ -47,6 +56,7 @@
                                   </svg>
 
                             </x-action-button>
+
                             <x-daisy-modal
                                 btnType=""
                                 title="insert new variant {{ $product->name }}"
@@ -82,6 +92,7 @@
                                     ],
                                 ]" />
                             </x-daisy-modal>
+
                         </div>
                     </td>
                 </tr>
@@ -102,7 +113,7 @@
                                     show ? hidden='block max-h-[25em] overflow-y-auto' : hidden='overflow-hidden block max-h-[10em]';"
                     >{{ $product->description }}</td>
                     <td>{{ $product->category->name }}</td>
-                    <td colspan="3" class="text-center"> No Variant</td>
+                    <td colspan="4" class="text-center"> No Variant</td>
                     <td>0</td>
                     <td class="text-nowrap">{{ $product->created_at->diffForHumans() }}</td>
                     <td>
@@ -124,6 +135,11 @@
                                         'type' => 'number',
                                         'directive' => 'productVariantRequest.stock',
                                         'placeholder' => '100',
+                                    ],
+                                    'purchasePrice' => [
+                                        'type' => 'text',
+                                        'directive' => 'productVariantRequest.purchasePrice',
+                                        'placeholder' => '100,000.00'
                                     ],
                                     'price' => [
                                         'type' => 'text',
@@ -153,6 +169,7 @@
         {{ $products->links('vendor.livewire.tailwind', data: ['scrollTo' => false]) }}
     </div>
 
+    {{-- product create --}}
     <div class="flex {{ $showEdit !== null ? 'justify-evenly md:justify-normal gap-2' : 'justify-evenly' }}">
         <x-daisy-modal
             btnType="btn btn-sm md:btn-sm mt-4 md:mt-0"
@@ -173,6 +190,11 @@
                         'type' => 'number',
                         'directive' => 'productRequest.quantity',
                         'placeholder' => '100',
+                    ],
+                    'purchasePrice' => [
+                        'type' => 'text',
+                        'directive' => 'productRequest.purchasePrice',
+                        'placeholder' => '100,000.00'
                     ],
                     'price' => [
                         'type' => 'text',
@@ -202,6 +224,7 @@
         </x-daisy-modal>
 
         @if ($showEdit)
+        {{-- update product --}}
         <x-daisy-modal
             title="update product"
             btnType="btn btn-sm btn-success md:btn-sm mt-4 md:mt-0"
@@ -223,6 +246,11 @@
                         'type' => 'textarea',
                         'directive' => 'productRequest.description',
                         'placeholder' => 'Lux Adalah sabun mandi'
+                    ],
+                    'PurchasePrice' => [
+                        'type' => 'text',
+                        'directive' => 'productRequest.purchasePrice',
+                        'placeholder' => '100,000.00'
                     ],
                     'price' => [
                         'type' => 'text',
@@ -258,4 +286,5 @@
                 <livewire:deleted-product-variant/>
         </div>
     @endif
+    </div>
 </div>

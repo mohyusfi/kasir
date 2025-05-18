@@ -1,5 +1,11 @@
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 min-h-[100vh]">
-    {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
+
+<x-slot name="header">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{ __('Orders') }}
+    </h2>
+</x-slot>
+<div class="py-10">
     <div class="flex gap-2 justify-around md:justify-between px-2">
         <x-input-search-product/>
         <x-select-options
@@ -143,13 +149,14 @@
                         Bayar Sekarang
                     </button>
                 </a>
-                @endif
                 <button
-                    class="w-full m-1 bg-red-500 text-white py-2 rounded-xl hover:bg-red-700 transition {{ count($transaction_details ?? []) > 0 ? '' : 'hidden' }}"
+                    class="w-full m-1 bg-red-500 text-white py-2 rounded-xl hover:bg-red-700 transition"
                     wire:click="cancelTransaction({{ $transactions?->id }})">
                     Cancel
                 </button>
+                @endif
             </div>
         </div>
     </div>
+</div>
 </div>

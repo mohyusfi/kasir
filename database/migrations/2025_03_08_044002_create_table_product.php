@@ -30,6 +30,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id')->nullable(false);
             $table->string('color', 100)->nullable();
             $table->string('size', 100)->nullable();
+            $table->decimal('purchasePrice', 20, 2)->nullable(false);
             $table->decimal('price', 20, 2)->nullable(false);
             $table->unsignedInteger('stock')->nullable(false)->default(0);
             $table->timestamps();

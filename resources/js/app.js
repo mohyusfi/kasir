@@ -1,8 +1,17 @@
-import './bootstrap';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import "./bootstrap";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
-AOS.init({
-    duration: 650,
-    once: true
+document.addEventListener("DOMContentLoaded", () => {
+    AOS.init({
+        duration: 650,
+        once: true,
+    });
+});
+
+document.addEventListener("livewire:navigated", () => {
+    AOS.init({
+        duration: 650,
+        once: true,
+    });
 });
